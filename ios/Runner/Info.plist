@@ -28,6 +28,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+  	<string>Profil fotoğrafı seçmek için fotoğraf galerisine erişim izni gerekiyor.</string>
+  	<key>NSCameraUsageDescription</key>
+  	<string>Profil fotoğrafı çekmek için kameraya erişim izni gerekiyor.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
