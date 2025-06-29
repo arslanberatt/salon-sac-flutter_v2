@@ -15,7 +15,7 @@ class CustomTextFieldTheme {
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppSizes.borderRadiusM),
-      borderSide: const BorderSide(color: AppColors.accent, width: 1.8),
+      borderSide: const BorderSide(color: AppColors.primary, width: 1.8),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppSizes.borderRadiusM),

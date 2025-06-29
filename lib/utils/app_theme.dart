@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/app_bar_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
+import 'package:salon_sac_flutter_v2/utils/themes/dropdown_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/elevated_button_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/text_field_theme.dart';
 
@@ -26,6 +27,7 @@ class MyThemes {
       bodyMedium: TextStyle(color: AppColors.textSecondary),
     ),
     cardColor: AppColors.textWhite,
+    dropdownMenuTheme: DropdownTheme.light,
   );
 
   static final darkTheme = ThemeData(
@@ -51,5 +53,6 @@ class MyThemes {
       bodyMedium: TextStyle(color: AppColors.textSecondary),
     ),
     cardColor: const Color.fromRGBO(27, 54, 77, 1),
+    dropdownMenuTheme: DropdownTheme.dark,
   );
 }

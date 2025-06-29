@@ -12,7 +12,7 @@ class SettingPage extends GetView<SettingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Ayarlar"), centerTitle: true),
+      appBar: CustomAppBar(),
       body: ListView(
         padding: const EdgeInsets.all(AppSizes.paddingM),
         children: [
@@ -84,6 +84,34 @@ class SettingPage extends GetView<SettingController> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingS),
+        child: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
+      centerTitle: false,
+      actionsPadding: EdgeInsets.symmetric(horizontal: AppSizes.paddingS),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.notifications_none_rounded),
+        ),
+      ],
     );
   }
 }

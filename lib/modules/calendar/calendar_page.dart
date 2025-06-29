@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -6,7 +7,7 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Salon Saç')),
+      appBar: CustomAppBar(),
       body: Center(child: Text('Takvim')),
     );
   }
