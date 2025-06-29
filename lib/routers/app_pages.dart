@@ -20,6 +20,7 @@ abstract class AppRoutes {
   static const EMPLOYEE = '/employee';
   static const PROFILE = '/profile';
   static const SETTING = '/setting';
+  static const TRANSACTION = '/transaction';
 }
 
 class AppPages {
@@ -49,6 +50,7 @@ class AppPages {
       page: () => EmployeePage(),
       binding: EmployeeBindings(),
     ),
+    GetPage(name: AppRoutes.TRANSACTION, page: () => EmployeePage()),
     GetPage(name: AppRoutes.SETTING, page: () => SettingPage()),
   ];
 }

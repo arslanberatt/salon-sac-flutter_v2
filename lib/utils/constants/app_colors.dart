@@ -4,6 +4,7 @@ class AppColors {
   // Ana renkler
   static const Color primary = Color(0xFF1C2A3A); // Koyu lacivert
   static const Color primaryLight = Color(0xFF3F5063);
+  static const Color primaryDark = Color.fromRGBO(16, 32, 56, 1);
   static const Color accent = Color(0xFF4F9EDD); // Mavi vurgulu
 
   // Arka plan
@@ -24,5 +25,5 @@ class AppColors {
   static const Color success = Color(0xFF388E3C);
 
   static const Color darkCard = Color(0xFF151A18);
-  static const Color lightCard = Color(0xFFF4F7F8);
+  static const Color lightCard = Color(0xFFF4F6F8);
 }

@@ -32,14 +32,15 @@ abstract class ApiConstants {
   // static const String myAdvanceRequests = '/my-advance-requests';
   // static const String allAdvanceRequests = '/all-advance-requests';
 
-  // // Transactions
-  // static const String transactions = '/transactions';
-  // static const String createTransaction = '/transaction';
-  // static const String cancelTransaction = '/transaction/cancel';
+  // Transactions
+  static const String transactions = '/api/transactions';
+  static const String createTransaction = '/api/add-transaction';
+  static const String cancelTransaction = '/api/cancel-transaction';
 
-  // // Categories (TransactionCategory)
-  // static const String categories = '/transaction-categories';
-  // static const String createCategory = '/transaction-category';
+  // Categories (TransactionCategory)
+  static const String categories = '/api/categories';
+  static const String createCategory = '/api/add-category';
+  static const String updateCategory = '/api/update-category';
 }
 
 class ApiServices extends GetxService {
