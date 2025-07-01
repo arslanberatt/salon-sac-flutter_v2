@@ -12,6 +12,22 @@ abstract class ApiConstants {
   static const String forgetPassword = '/api/forget-password';
   static const String resetPassword = '/api/reset-password';
   static const String profile = '/api/me';
+  static const String updateProfile = '/api/update-user';
+
+  // Transactions
+  static const String transactions = '/api/transactions';
+  static const String createTransaction = '/api/add-transaction';
+  static const String cancelTransaction = '/api/cancel-transaction';
+
+  // Categories (TransactionCategory)
+  static const String categories = '/api/categories';
+  static const String createCategory = '/api/add-category';
+  static const String updateCategory = '/api/update-category';
+
+  // Services
+  static const String services = '/api/services';
+  static const String createService = '/api/create-service';
+  static const String updateService = '/api/update-service';
 
   // // Users (admin updates)
   // static const String updateUser = '/users'; // + /:id
@@ -31,16 +47,6 @@ abstract class ApiConstants {
   // static const String requestAdvance = '/advance-request';
   // static const String myAdvanceRequests = '/my-advance-requests';
   // static const String allAdvanceRequests = '/all-advance-requests';
-
-  // Transactions
-  static const String transactions = '/api/transactions';
-  static const String createTransaction = '/api/add-transaction';
-  static const String cancelTransaction = '/api/cancel-transaction';
-
-  // Categories (TransactionCategory)
-  static const String categories = '/api/categories';
-  static const String createCategory = '/api/add-category';
-  static const String updateCategory = '/api/update-category';
 }
 
 class ApiServices extends GetxService {

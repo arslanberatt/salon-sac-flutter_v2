@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
+import 'package:salon_sac_flutter_v2/modules/common_widgets/section_title.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 

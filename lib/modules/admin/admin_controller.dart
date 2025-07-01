@@ -15,6 +15,6 @@ class AdminController extends BaseController {
   }
 
   void goToSetting() {
-    Get.toNamed(AppRoutes.SETTING);
+    Get.toNamed(AppRoutes.TRANSACTION);
   }
 }

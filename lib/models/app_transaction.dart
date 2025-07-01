@@ -35,26 +35,28 @@ class AppTransaction {
   });
 
   factory AppTransaction.fromJson(Map<String, dynamic> json) => AppTransaction(
-    id: json["_id"],
-    amount: json["amount"],
-    description: json["description"],
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
-    userId: json["user_id"],
-    category: json["category"] == null
-        ? null
-        : Category.fromJson(json["category"]),
-    createdBy: json["createdBy"],
-    canceled: json["canceled"],
-    canceledAt: json["canceledAt"] == null
-        ? null
-        : DateTime.parse(json["canceledAt"]),
-    canceledBy: json["canceledBy"],
-    createdAt: json["createdAt"] == null
-        ? null
-        : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null
-        ? null
-        : DateTime.parse(json["updatedAt"]),
+    id: json["_id"] as String?,
+    amount: (json["amount"] as num?)?.toDouble(),
+    description: json["description"] as String?,
+    date: json["date"] != null ? DateTime.parse(json["date"] as String) : null,
+    createdBy: json["createdBy"] != null
+        ? (json["createdBy"]["_id"] as String?)
+        : null,
+    userId: json["user_id"] as String?,
+    category: json["category"] != null
+        ? Category.fromJson(json["category"] as Map<String, dynamic>)
+        : null,
+    canceled: json["canceled"] as bool?,
+    canceledAt: json["canceledAt"] != null
+        ? DateTime.parse(json["canceledAt"] as String)
+        : null,
+    canceledBy: json["canceledBy"] as String?,
+    createdAt: json["createdAt"] != null
+        ? DateTime.parse(json["createdAt"] as String)
+        : null,
+    updatedAt: json["updatedAt"] != null
+        ? DateTime.parse(json["updatedAt"] as String)
+        : null,
   );
 
   Map<String, dynamic> toJson() {
@@ -78,6 +80,11 @@ class AppTransaction {
       "createdAt": createdAt?.toUtc().toIso8601String(),
       "updatedAt": updatedAt?.toUtc().toIso8601String(),
     };
+  }
+
+  @override
+  String toString() {
+    return 'AppTransaction(id: $id, amount: $amount, desc: $description, date: $date, category: ${category?.name})';
   }
 }
 

@@ -5,11 +5,17 @@ import 'package:salon_sac_flutter_v2/modules/employee/employee_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/employee/employee_page.dart';
 import 'package:salon_sac_flutter_v2/modules/login/login_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/login/login_page.dart';
+import 'package:salon_sac_flutter_v2/modules/profile/profile_page.dart';
+import 'package:salon_sac_flutter_v2/modules/profile/update_profile_page.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_page.dart';
+import 'package:salon_sac_flutter_v2/modules/service/service_page.dart';
+import 'package:salon_sac_flutter_v2/modules/service/update_service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
 import 'package:salon_sac_flutter_v2/modules/splash/splash_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/splash/splash_page.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction/transaction_page.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction_dashboard/transaction_dashboard_page.dart';
 
 abstract class AppRoutes {
   static const INITIAL = SPLASH;
@@ -18,9 +24,13 @@ abstract class AppRoutes {
   static const LOGIN = '/login';
   static const ADMIN = '/admin';
   static const EMPLOYEE = '/employee';
-  static const PROFILE = '/profile';
+  static const UPDATEPROFILE = '/update-profile';
   static const SETTING = '/setting';
   static const TRANSACTION = '/transaction';
+  static const TRANSACTIONDASHBOARD = '/transaction-dashboard';
+  static const PROFILE = '/profile';
+  static const SERVICE = '/service';
+  static const UPDATESERVICE = '/update-service';
 }
 
 class AppPages {
@@ -50,7 +60,15 @@ class AppPages {
       page: () => EmployeePage(),
       binding: EmployeeBindings(),
     ),
-    GetPage(name: AppRoutes.TRANSACTION, page: () => EmployeePage()),
+    GetPage(name: AppRoutes.TRANSACTION, page: () => TransactionPage()),
+    GetPage(
+      name: AppRoutes.TRANSACTIONDASHBOARD,
+      page: () => TransactionDashboardPage(),
+    ),
+    GetPage(name: AppRoutes.UPDATEPROFILE, page: () => UpdateProfilePage()),
+    GetPage(name: AppRoutes.PROFILE, page: () => ProfilePage()),
     GetPage(name: AppRoutes.SETTING, page: () => SettingPage()),
+    GetPage(name: AppRoutes.SERVICE, page: () => ServicePage()),
+    GetPage(name: AppRoutes.UPDATESERVICE, page: () => UpdateServicePage()),
   ];
 }

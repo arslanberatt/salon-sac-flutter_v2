@@ -5,7 +5,8 @@ import 'package:salon_sac_flutter_v2/modules/admin/admin_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/admin_dashboard/admin_dashboard_page.dart';
 import 'package:salon_sac_flutter_v2/modules/calendar/calendar_page.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
-import 'package:salon_sac_flutter_v2/modules/transaction/transaction_page.dart';
+
+import 'package:salon_sac_flutter_v2/modules/transaction_dashboard/transaction_dashboard_page.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 
 class AdminPage extends GetView<AdminController> {
@@ -20,7 +21,7 @@ class AdminPage extends GetView<AdminController> {
           children: [
             AdminDashboardPage(),
             CalendarPage(),
-            TransactionPage(),
+            TransactionDashboardPage(),
             SettingPage(),
           ],
         ),

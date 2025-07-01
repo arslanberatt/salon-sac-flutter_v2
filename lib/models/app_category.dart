@@ -16,5 +16,4 @@ class AppCategory {
       AppCategory(id: json["_id"], name: json["name"], type: json["type"]);
 
   Map<String, dynamic> toJson() => {"_id": id, "name": name, "type": type};
-
 }
