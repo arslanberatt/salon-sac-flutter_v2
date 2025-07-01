@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/models/app_transaction.dart';
 import 'package:salon_sac_flutter_v2/services/api_service.dart';
@@ -14,10 +15,12 @@ class TransactionRepository extends GetxService {
   Future<List<AppTransaction>> getTransactions() async {
     final response = await _apiServices.get(ApiConstants.transactions);
     if (response.statusCode == 200) {
-      var listOfData = response.data['transactions'] as List;
-      return listOfData
-          .map((transaction) => AppTransaction.fromJson(transaction))
+      final dataMap = response.data['data'] as Map<String, dynamic>;
+      final rawList = (dataMap['transactions'] as List<dynamic>?) ?? [];
+      final transactions = rawList
+          .map((e) => AppTransaction.fromJson(e))
           .toList();
+      return transactions;
     }
     throw Exception('Transactionlar getirilirken bir hata oluştu');
   }
@@ -33,13 +36,24 @@ class TransactionRepository extends GetxService {
     throw Exception('Transactionlar eklenirken bir hata oluştu');
   }
 
-  Future<AppTransaction> cancelTransaction(String id) async {
-    final response = await _apiServices.put(
+  Future<AppTransaction?> cancelTransaction(String id) async {
+    final res = await _apiServices.put(
       '${ApiConstants.cancelTransaction}/$id',
+      options: Options(
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
     );
-    if (response.statusCode == 200) {
-      return AppTransaction.fromJson(response.data["data"]);
+
+    if (res.statusCode == 200 && res.data['data'] != null) {
+      return AppTransaction.fromJson(res.data['data']);
+    } else if (res.statusCode == 404) {
+      print('İşlem bulunamadı veya zaten iptal edilmiş.');
+      return null;
+    } else {
+      print('Sunucu hatası: ${res.statusCode}');
+      return null;
     }
-    throw Exception('Transaction iptal edilirken bir hata oluştu');
   }
 }

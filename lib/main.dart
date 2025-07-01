@@ -6,6 +6,7 @@ import 'package:salon_sac_flutter_v2/utils/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

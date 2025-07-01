@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:get/state_manager.dart';
+import 'package:salon_sac_flutter_v2/modules/admin_dashboard/admin_dashboard_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/common_widgets/custom_appbar.dart';
+import 'package:salon_sac_flutter_v2/modules/common_widgets/section_title.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
-class AdminDashboardPage extends StatelessWidget {
+class AdminDashboardPage extends GetView<AdminDashboardController> {
   AdminDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final progressValue = 30.0;
-
     return Scaffold(
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
@@ -21,7 +23,7 @@ class AdminDashboardPage extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.primaryDark,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppSizes.borderRadiusM),
               ),
               child: Row(
                 children: [
@@ -33,11 +35,11 @@ class AdminDashboardPage extends StatelessWidget {
                           "Kasa",
                           style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: AppSizes.spacingS),
                         Row(
                           children: [
                             Text(
-                              '3.250,00 ₺',
+                              '23.250,00 ₺',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
@@ -49,12 +51,10 @@ class AdminDashboardPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  PrimSistem(progressValue: progressValue),
                 ],
               ),
             ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: AppSizes.spacingXL),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
@@ -64,12 +64,28 @@ class AdminDashboardPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
             Row(
               children: [
-                Expanded(child: _categoryCard("Personal Plan", 3)),
+                Expanded(
+                  child: _categoryCard(
+                    context,
+                    Icon(Icons.people_alt_outlined),
+                    "Çalışanlar",
+                    3,
+                    () {},
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _categoryCard("Work Plan", 8)),
+                Expanded(
+                  child: _categoryCard(
+                    context,
+                    Icon(Icons.cut_outlined),
+
+                    "Hizmetler",
+                    8,
+                    controller.goToService,
+                  ),
+                ),
               ],
             ),
 
@@ -90,78 +106,33 @@ class AdminDashboardPage extends StatelessWidget {
   }
 }
 
-class PrimSistem extends StatelessWidget {
-  const PrimSistem({super.key, required this.progressValue});
-  final double progressValue;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      child: SfRadialGauge(
-        animationDuration: 2000,
-        axes: <RadialAxis>[
-          RadialAxis(
-            minimum: 0,
-            maximum: 100,
-            showLabels: false,
-            showTicks: false,
-            axisLineStyle: AxisLineStyle(
-              thickness: 0.2,
-              cornerStyle: CornerStyle.bothCurve,
-              color: AppColors.textSecondary,
-              thicknessUnit: GaugeSizeUnit.factor,
-            ),
-            pointers: <GaugePointer>[
-              RangePointer(
-                value: progressValue,
-                cornerStyle: CornerStyle.bothCurve,
-                width: 0.2,
-                sizeUnit: GaugeSizeUnit.factor,
-                color: Colors.white,
-              ),
-            ],
-            annotations: <GaugeAnnotation>[
-              GaugeAnnotation(
-                widget: Text(
-                  '${progressValue.toStringAsFixed(0)} / 100',
-                  style: TextStyle(color: AppColors.textWhite),
-                ),
-              ),
-            ],
-          ),
+Widget _categoryCard(
+  BuildContext context,
+  Icon icon,
+  String title,
+  int plans,
+  Callback onTap,
+) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(AppSizes.paddingM),
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.darkCard
+            : AppColors.lightCard,
+        borderRadius: BorderRadius.circular(AppSizes.borderRadiusM),
+      ),
+      child: Column(
+        children: [
+          icon,
+          const SizedBox(height: 8),
+          Text(title, style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(height: 4),
+          Text("$plans adet", style: const TextStyle(color: Colors.grey)),
+          const SizedBox(height: 8),
         ],
       ),
-    );
-  }
-}
-
-Widget _categoryCard(String title, int plans) {
-  return Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.grey.shade100,
-      borderRadius: BorderRadius.circular(16),
-    ),
-    child: Column(
-      children: [
-        const Icon(Icons.calendar_today_outlined),
-        const SizedBox(height: 8),
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
-        Text(
-          "$plans Plans Remaining",
-          style: const TextStyle(color: Colors.grey),
-        ),
-        const SizedBox(height: 8),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Go to Plan", style: TextStyle(color: Colors.indigo)),
-            Icon(Icons.arrow_forward_ios, size: 12, color: Colors.indigo),
-          ],
-        ),
-      ],
     ),
   );
 }

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/repositories/category_repository.dart';
+import 'package:salon_sac_flutter_v2/repositories/service_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/transaction_repository.dart';
+import 'package:salon_sac_flutter_v2/repositories/user_repository.dart';
 import 'package:salon_sac_flutter_v2/services/api_service.dart';
 import 'package:salon_sac_flutter_v2/services/auth_service.dart';
 import 'package:salon_sac_flutter_v2/services/storage_service.dart';
@@ -31,5 +33,7 @@ class AppBinding implements Bindings {
 
     Get.put(CategoryRepository());
     Get.put(TransactionRepository());
+    Get.put(UserRepository());
+    Get.put(ServiceRepository());
   }
 }

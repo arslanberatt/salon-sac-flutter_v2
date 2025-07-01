@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/app_bar_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
+import 'package:salon_sac_flutter_v2/utils/themes/dialog_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/dropdown_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/elevated_button_theme.dart';
+import 'package:salon_sac_flutter_v2/utils/themes/picker_theme.dart';
 import 'package:salon_sac_flutter_v2/utils/themes/text_field_theme.dart';
+import 'package:salon_sac_flutter_v2/utils/themes/time_picker_theme.dart';
 
 class MyThemes {
   static final lightTheme = ThemeData(
@@ -28,6 +31,9 @@ class MyThemes {
     ),
     cardColor: AppColors.textWhite,
     dropdownMenuTheme: DropdownTheme.light,
+    dialogTheme: CustomDialogTheme.light,
+    datePickerTheme: CustomDatePickerTheme.light,
+    timePickerTheme: CustomTimePickerTheme.light,
   );
 
   static final darkTheme = ThemeData(
@@ -54,5 +60,8 @@ class MyThemes {
     ),
     cardColor: const Color.fromRGBO(27, 54, 77, 1),
     dropdownMenuTheme: DropdownTheme.dark,
+    dialogTheme: CustomDialogTheme.dark,
+    datePickerTheme: CustomDatePickerTheme.dark,
+    timePickerTheme: CustomTimePickerTheme.dark,
   );
 }

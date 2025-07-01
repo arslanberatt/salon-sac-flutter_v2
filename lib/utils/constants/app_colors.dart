@@ -17,7 +17,7 @@ class AppColors {
   static const Color textWhite = Colors.white;
 
   // Giriş kutusu
-  static const Color inputFill = Color(0xFFF1F3F5);
+  static const Color inputFill = Color(0xFFF1F3F9);
   static const Color inputBorder = Color(0xFFE0E0E0);
 
   // Hata ve durumlar
@@ -25,5 +25,5 @@ class AppColors {
   static const Color success = Color(0xFF388E3C);
 
   static const Color darkCard = Color(0xFF151A18);
-  static const Color lightCard = Color(0xFFF4F6F8);
+  static const Color lightCard = Color(0xFFF1F3F9);
 }

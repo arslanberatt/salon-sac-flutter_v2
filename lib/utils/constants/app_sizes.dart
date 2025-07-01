@@ -16,6 +16,7 @@ class AppSizes {
   static const double spacingS = 8;
   static const double spacingM = 16;
   static const double spacingL = 24;
+  static const double spacingXL = 32;
 
   // Icon Size
   static const double iconS = 20;

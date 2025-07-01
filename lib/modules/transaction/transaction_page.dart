@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
-import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
+import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction/widgets/add_category_dialog.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction/widgets/date_input.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction/widgets/save_button.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
-import 'package:salon_sac_flutter_v2/modules/transaction/transaction_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction/controllers/transaction_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction/widgets/amount_input.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction/widgets/category_dropdown.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction/widgets/description_input.dart';
@@ -16,7 +16,12 @@ class TransactionPage extends GetView<TransactionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: Obx(
         () => controller.isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -32,7 +37,16 @@ class TransactionPage extends GetView<TransactionController> {
                         children: [
                           Expanded(child: CategoryDropdown()),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              final newCategory = await Get.dialog(
+                                AddCategoryDialog(),
+                              );
+                              if (newCategory != null) {
+                                await controller.loadCategories();
+                                controller.selectedCategoryId.value =
+                                    newCategory.id!;
+                              }
+                            },
                             icon: Icon(Icons.add_circle_outline),
                           ),
                         ],

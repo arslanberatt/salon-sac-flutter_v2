@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:salon_sac_flutter_v2/modules/transaction/transaction_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction/controllers/transaction_controller.dart';
 
 class DateTimeInput extends GetView<TransactionController> {
   const DateTimeInput({super.key});

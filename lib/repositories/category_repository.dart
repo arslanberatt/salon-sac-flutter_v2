@@ -16,7 +16,8 @@ class CategoryRepository extends GetxService {
 
     if (response.statusCode == 200) {
       final list = (response.data['data'] ?? []) as List;
-      print(response.data['data']);
+      print(list);
+      print(list.map((e) => AppCategory.fromJson(e)).toList());
       return list.map((e) => AppCategory.fromJson(e)).toList();
     }
     throw Exception("Kategoriler getirilirken bir hata oluştu!");
@@ -24,7 +25,7 @@ class CategoryRepository extends GetxService {
 
   Future<AppCategory> createCategory(AppCategory category) async {
     final response = await _apiServices.post(
-      ApiConstants.categories,
+      ApiConstants.createCategory,
       data: category.toJson(),
     );
     if (response.statusCode == 201) {

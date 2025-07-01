@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/core/base_controller.dart';
 import 'package:salon_sac_flutter_v2/models/app_category.dart';
 import 'package:salon_sac_flutter_v2/models/app_transaction.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction_dashboard/transaction_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/repositories/category_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/transaction_repository.dart';
-import 'package:salon_sac_flutter_v2/services/auth_service.dart';
 
 class TransactionController extends BaseController {
   final CategoryRepository _categoryRepository = Get.find<CategoryRepository>();
@@ -33,7 +33,6 @@ class TransactionController extends BaseController {
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
 
-    // Seçili kategoriyi bul
     final selectedCat = categories.firstWhere(
       (c) => c.id == selectedCategoryId.value,
       orElse: () => throw Exception('Kategori seçilmedi'),
@@ -46,7 +45,6 @@ class TransactionController extends BaseController {
         description: description.value,
         date: date.value,
         category: Category(
-          // ya da AppCategory
           id: selectedCat.id,
           name: selectedCat.name,
           type: selectedCat.type,
@@ -58,8 +56,9 @@ class TransactionController extends BaseController {
         transaction,
       );
       if (result != null) {
-        showSuccessSnackbar(message: 'İşlem oluşturuldu!');
-        // Get.back();
+        Get.find<TransactionDashboardController>().refreshDashboard();
+        Get.back();
+        showSuccessSnackbar(message: 'Transaction başarıyla eklendi');
         clearForm();
       } else {
         showErrorSnackbar(message: 'İşlem oluşturulurken hata oluştu!');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
-import 'package:salon_sac_flutter_v2/modules/transaction/transaction_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction/controllers/transaction_controller.dart';
 
 class DescriptionInput extends GetView<TransactionController> {
   const DescriptionInput({super.key});

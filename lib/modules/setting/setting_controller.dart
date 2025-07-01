@@ -9,11 +9,14 @@ class SettingController extends BaseController {
   Rx<AppUser?> get user => _authService.currentUser;
 
   @override
-void onInit() {
-  super.onInit();
-  print("SettingController loaded. user: ${user.value?.toJson()}");
-}
+  void onInit() {
+    super.onInit();
+    print("SettingController loaded. user: ${user.value?.toJson()}");
+  }
 
+  Future<void> refreshUser() async {
+    await _authService.getProfile();
+  }
 
   logout() async {
     await _authService.signOut();
