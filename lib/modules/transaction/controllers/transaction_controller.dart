@@ -55,7 +55,7 @@ class TransactionController extends BaseController {
       final result = await _transactionRepository.createTransaction(
         transaction,
       );
-      if (result != null) {
+      if (result == true) {
         Get.find<TransactionDashboardController>().refreshDashboard();
         Get.back();
         showSuccessSnackbar(message: 'Transaction başarıyla eklendi');

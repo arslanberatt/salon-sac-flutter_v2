@@ -63,9 +63,7 @@ class TransactionDashboardController extends BaseController {
   Future<void> cancelTransaction(String transactionId) async {
     setLoading(true);
     try {
-      final transactions = await _transactionRepository.cancelTransaction(
-        transactionId,
-      );
+      await _transactionRepository.cancelTransaction(transactionId);
       allTransactions.removeWhere((element) => element.id == transactionId);
       montlyTransaction();
       showSuccessSnackbar(message: 'İşlem iptal edildi!');

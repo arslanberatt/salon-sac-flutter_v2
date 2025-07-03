@@ -12,19 +12,27 @@ class ProfileController extends BaseController {
   final AuthService _auth = Get.find<AuthService>();
   final UserRepository _userRepository = Get.find<UserRepository>();
   final ImagePicker _picker = ImagePicker();
-  final formKey = GlobalKey<FormState>();
 
   final name = ''.obs;
   final lastname = ''.obs;
   final email = ''.obs;
   final phone = ''.obs;
-
+  final newPassword = ''.obs;
+  final confirmPassword = ''.obs;
+  final isNewPasswordHidden = true.obs;
+  final isConfirmPasswordHidden = true.obs;
+  final passwordFormKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final pickedAvatar = Rxn<XFile>();
 
   Rx<AppUser?> get user => _auth.currentUser;
 
   void goToProfile() {
     Get.toNamed(AppRoutes.PROFILE);
+  }
+
+  void goToChangePassword() {
+    Get.toNamed(AppRoutes.CHANGEPASSWORD);
   }
 
   void goToUpdate() {
@@ -63,11 +71,11 @@ class ProfileController extends BaseController {
       setLoading(true);
       final updated = await _userRepository.updateProfile(
         body: body,
-        avatarFile: pickedAvatar.value, // 👈 DEĞİŞTİ
+        avatarFile: pickedAvatar.value,
       );
       if (updated != null) {
         _auth.currentUser.value = updated;
-        pickedAvatar.value = null; // 👈 DEĞİŞTİ
+        pickedAvatar.value = null;
         Get.find<SettingController>().refreshUser();
         Get.back();
         showSuccessSnackbar(message: 'Profil başarıyla güncellendi');
@@ -76,6 +84,27 @@ class ProfileController extends BaseController {
       }
     } catch (e) {
       showErrorSnackbar(message: e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> changePassword() async {
+    if (!passwordFormKey.currentState!.validate()) return;
+    if (newPassword.value != confirmPassword.value) {
+      showErrorSnackbar(message: 'Şifreler eşleşmiyor');
+      return;
+    }
+    try {
+      setLoading(true);
+      final updated = await _userRepository.changePassword(newPassword.value);
+      if (updated != null) {
+        _auth.currentUser.value = updated;
+        showSuccessSnackbar(message: 'Şifre başarıyla değiştirildi');
+        Get.back();
+      } else {
+        showErrorSnackbar(message: 'Hata oluştu');
+      }
     } finally {
       setLoading(false);
     }

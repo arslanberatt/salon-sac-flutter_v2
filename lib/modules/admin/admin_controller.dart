@@ -14,7 +14,11 @@ class AdminController extends BaseController {
     Get.offAllNamed(AppRoutes.LOGIN);
   }
 
-  void goToSetting() {
+  void goToTransaction() {
     Get.toNamed(AppRoutes.TRANSACTION);
+  }
+
+  void goToAppointment() {
+    Get.toNamed(AppRoutes.APPOINTMENT);
   }
 }

@@ -27,7 +27,7 @@ class AdminPage extends GetView<AdminController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.goToSetting,
+        onPressed: controller.goToAppointment,
         shape: CircleBorder(),
         child: Icon(Icons.add, size: 32, color: AppColors.backgroundLight),
         backgroundColor: AppColors.primary,

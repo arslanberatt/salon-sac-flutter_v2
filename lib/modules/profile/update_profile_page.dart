@@ -14,7 +14,12 @@ class UpdateProfilePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profili Düzenle')),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.paddingM),
         child: Form(
@@ -46,8 +51,13 @@ class UpdateProfilePage extends GetView<ProfileController> {
                         child: image == null
                             ? const Icon(Icons.person_outline, size: 48)
                             : null,
+
                         onBackgroundImageError: (_, __) {
-                          print("Avatar yüklenemedi");
+                          Icon(
+                            Icons.person,
+                            size: 64,
+                            color: AppColors.primary,
+                          );
                         },
                       ),
                       Positioned(
@@ -77,14 +87,14 @@ class UpdateProfilePage extends GetView<ProfileController> {
                 value: controller.name,
                 emptyError: 'Adınızı girin',
               ),
-              const SizedBox(height: AppSizes.paddingS),
+              const SizedBox(height: AppSizes.spacingM),
 
               InfoInput(
                 labelText: 'Soyadı',
                 value: controller.lastname,
                 emptyError: 'Soyadınızı girin',
               ),
-              const SizedBox(height: AppSizes.paddingS),
+              const SizedBox(height: AppSizes.spacingM),
 
               InfoInput(
                 labelText: 'Email',
@@ -93,7 +103,7 @@ class UpdateProfilePage extends GetView<ProfileController> {
                 validator: (v) =>
                     v != null && v.contains('@') ? null : 'Geçerli email girin',
               ),
-              const SizedBox(height: AppSizes.paddingS),
+              const SizedBox(height: AppSizes.spacingM),
 
               InfoInput(
                 labelText: 'Telefon',

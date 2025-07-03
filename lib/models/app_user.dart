@@ -78,6 +78,16 @@ class AppUser {
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
   };
+
+  AppUser? copyWith({
+    required bool isAdmin,
+    required bool isActive,
+    required bool isMod,
+    required int salary,
+    required int commissionRate,
+  }) {
+    return null;
+  }
 }
 
 class Reset {

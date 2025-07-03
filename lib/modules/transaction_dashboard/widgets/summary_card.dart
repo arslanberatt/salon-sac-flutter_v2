@@ -53,10 +53,10 @@ class SummaryCard extends GetView<TransactionDashboardController> {
                 ),
               ],
             ),
-            // Text(
-            //   '${((controller.montlyIncome.value - controller.montlyExpense.value == amount) || (controller.montlyIncome.value == amount)) && amount > 0 ? '+ ' : ''}${ammountFormat.format(amount)}',
-            //   style: TextStyle(fontSize: 18, color: color),
-            // ),
+            Text(
+              '${((controller.montlyIncome.value - controller.montlyExpense.value == amount) || (controller.montlyIncome.value == amount)) && amount > 0 ? '+ ' : ''}${ammountFormat.format(amount)}',
+              style: TextStyle(fontSize: 18, color: color),
+            ),
           ],
         ),
       ),

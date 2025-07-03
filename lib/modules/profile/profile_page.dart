@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/profile_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/widgets/info_card.dart';
 import 'package:salon_sac_flutter_v2/services/api_service.dart';
+import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class ProfilePage extends GetView<ProfileController> {
@@ -18,7 +19,7 @@ class ProfilePage extends GetView<ProfileController> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.settings_outlined),
             onPressed: controller.goToUpdate,
           ),
         ],
@@ -35,16 +36,19 @@ class ProfilePage extends GetView<ProfileController> {
               child: CircleAvatar(
                 radius: 64,
                 backgroundColor: Colors.grey.shade300,
-                child: user.avatar != null
-                    ? ClipOval(
-                        child: Image.network(
-                          '${ApiConstants.baseUrl}${user.avatar}',
-                          width: 140,
-                          height: 140,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : const Icon(Icons.person, size: 48),
+                child: ClipOval(
+                  child: Image.network(
+                    '${ApiConstants.baseUrl}${user.avatar}',
+                    width: 140,
+                    height: 140,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.person,
+                      size: 64,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: AppSizes.paddingM),
