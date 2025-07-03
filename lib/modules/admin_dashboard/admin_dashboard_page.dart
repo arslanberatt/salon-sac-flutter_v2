@@ -8,7 +8,7 @@ import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class AdminDashboardPage extends GetView<AdminDashboardController> {
-  AdminDashboardPage({super.key});
+  const AdminDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class AdminDashboardPage extends GetView<AdminDashboardController> {
                     Icon(Icons.people_alt_outlined),
                     "Çalışanlar",
                     3,
-                    () {},
+                    controller.goTogoToEmployeeList,
                   ),
                 ),
                 const SizedBox(width: 12),

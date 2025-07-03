@@ -13,18 +13,14 @@ class DurationInput extends GetView<ServiceController> {
         border: OutlineInputBorder(),
         prefixIcon: Icon(Icons.timer_outlined),
       ),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      keyboardType: TextInputType.number,
       onChanged: (value) {
-        controller.duration.value = value as int;
+        controller.duration.value = int.tryParse(value) ?? 0;
       },
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Süre giriniz';
-        }
-        final numValue = num.tryParse(value);
-        if (numValue == null || numValue <= 0) {
-          return 'Geçersiz süre';
-        }
+        if (value == null || value.isEmpty) return 'Süre giriniz';
+        final numValue = int.tryParse(value);
+        if (numValue == null || numValue <= 0) return 'Geçersiz süre';
         return null;
       },
     );

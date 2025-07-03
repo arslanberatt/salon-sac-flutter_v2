@@ -16,8 +16,6 @@ class ServiceRepository extends GetxService {
 
     if (response.statusCode == 200) {
       final list = (response.data['data'] ?? []) as List;
-      print(list);
-      print(list.map((e) => AppService.fromJson(e)).toList());
       return list.map((e) => AppService.fromJson(e)).toList();
     }
     throw Exception("Kategoriler getirilirken bir hata oluştu!");
@@ -28,10 +26,12 @@ class ServiceRepository extends GetxService {
       ApiConstants.createService,
       data: service.toJson(),
     );
-    if (response.statusCode == 201) {
-      return AppService.fromJson(response.data);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final json = response.data['data'] ?? response.data;
+      return AppService.fromJson(json);
     }
-    throw ("Kategoriler eklenirken bir hata oluştu!");
+
+    throw Exception("Hizmet eklenirken bir hata oluştu!");
   }
 
   Future<AppService> updateService(AppService service) async {

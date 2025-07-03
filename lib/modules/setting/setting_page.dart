@@ -8,6 +8,7 @@ import 'package:salon_sac_flutter_v2/modules/setting/widgets/profile_item.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/setting_item.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/theme_item.dart';
 import 'package:salon_sac_flutter_v2/services/api_service.dart';
+import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class SettingPage extends GetView<SettingController> {
@@ -33,13 +34,18 @@ class SettingPage extends GetView<SettingController> {
                       CircleAvatar(
                         radius: 48,
                         backgroundColor: Colors.grey.shade300,
-                        child: controller.user.value?.avatar != null
+                        child: controller.user.value?.avatar?.isNotEmpty == true
                             ? ClipOval(
                                 child: Image.network(
                                   '${ApiConstants.baseUrl}${controller.user.value!.avatar}',
                                   width: 96,
                                   height: 96,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => const Icon(
+                                    Icons.person,
+                                    size: 64,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                               )
                             : const Icon(Icons.person, size: 48),
@@ -82,15 +88,21 @@ class SettingPage extends GetView<SettingController> {
               subtitle: "Kullanım ve gizlilik",
             ),
             ThemeItem(),
-            // const SettingsItem(icon: Icons.lock_outline, title: "Şifre"),
-            // const SettingsItem(
-            //   icon: Icons.support_agent_outlined,
-            //   title: "İletişim",
-            // ),
-            // const SettingsItem(
-            //   icon: Icons.privacy_tip_outlined,
-            //   title: "Gizlilik",
-            // ),
+            SettingsItem(
+              icon: Icons.lock_outline,
+              title: "Şifre",
+              onTap: () => Get.find<ProfileController>().goToChangePassword(),
+            ),
+            SettingsItem(
+              icon: Icons.support_agent_outlined,
+              title: "İletişim",
+              onTap: () => Get.find<SettingController>().goToSupport(),
+            ),
+            SettingsItem(
+              icon: Icons.privacy_tip_outlined,
+              title: "Gizlilik",
+              onTap: () => Get.find<SettingController>().goToPrivacy(),
+            ),
           ],
         ),
       ),

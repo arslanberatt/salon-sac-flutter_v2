@@ -9,7 +9,12 @@ class UpdateServicePage extends GetView<UpdateServiceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Hizmeti Düzenle')),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.paddingM),
         child: Form(

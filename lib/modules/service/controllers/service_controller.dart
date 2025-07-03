@@ -15,14 +15,14 @@ class ServiceController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    getServices();
+    loadServices();
   }
 
   Future<void> refreshService() async {
-    await getServices();
+    await loadServices();
   }
 
-  Future<void> getServices() async {
+  Future<void> loadServices() async {
     setLoading(true);
     try {
       allServices.value = await _serviceRepository.getServices();
@@ -38,15 +38,14 @@ class ServiceController extends BaseController {
     formKey.currentState!.save();
     setLoading(true);
     try {
-      final newSvc = AppService(
+      final service = AppService(
         name: name.value,
         duration: duration.value,
         price: price.value,
       );
-      await _serviceRepository.createService(newSvc);
+      await _serviceRepository.createService(service);
       showSuccessSnackbar(message: 'Hizmet oluşturuldu');
-      Get.back();
-      await getServices();
+      await loadServices();
     } catch (e) {
       showErrorSnackbar(message: 'Hizmet oluşturulurken hata oluştu');
     } finally {

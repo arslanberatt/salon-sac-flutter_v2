@@ -14,9 +14,9 @@ class AppService {
   AppService({this.id, this.name, this.duration, this.price});
 
   factory AppService.fromJson(Map<String, dynamic> json) => AppService(
-    id: json["_id"],
-    name: json["name"],
-    duration: json["duration"],
+    id: json["_id"] as String?,
+    name: json["name"] as String?,
+    duration: json["duration"] as int?,
     price: (json["price"] as num?)?.toDouble(),
   );
 

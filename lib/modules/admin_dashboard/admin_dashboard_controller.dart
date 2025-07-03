@@ -6,4 +6,8 @@ class AdminDashboardController extends BaseController {
   void goToService() {
     Get.toNamed(AppRoutes.SERVICE);
   }
+  
+  void goTogoToEmployeeList() {
+    Get.toNamed(AppRoutes.EMPLOYEELIST);
+  }
 }

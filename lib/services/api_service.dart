@@ -11,8 +11,13 @@ abstract class ApiConstants {
   static const String register = '/api/register';
   static const String forgetPassword = '/api/forget-password';
   static const String resetPassword = '/api/reset-password';
+
+  // User
   static const String profile = '/api/me';
   static const String updateProfile = '/api/update-user';
+  static const String activeUsers = '/api/active';
+  static const String passiveUsers = '/api/passive';
+  static const String updateUser = '/api/users/';
 
   // Transactions
   static const String transactions = '/api/transactions';
@@ -29,14 +34,11 @@ abstract class ApiConstants {
   static const String createService = '/api/create-service';
   static const String updateService = '/api/update-service';
 
-  // // Users (admin updates)
-  // static const String updateUser = '/users'; // + /:id
-
   // // Appointments
-  // static const String appointments = '/appointments';
-  // static const String createAppointment = '/create-appointment';
-  // static const String markAsDone = '/appointments/mark-as-done';
-  // static const String cancelAppointment = '/appointments/cancel';
+  static const String appointments = '/api/appointments';
+  static const String createAppointment = '/api/create-appointment';
+  static const String markAsDone = '/api/appointments/mark-as-done';
+  static const String cancelAppointment = '/api/appointments/cancel';
 
   // // Salary
   // static const String mySalaryRecords = '/my-salary-records';

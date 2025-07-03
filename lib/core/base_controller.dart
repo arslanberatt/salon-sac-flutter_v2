@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 
 class BaseController extends GetxController {

@@ -11,11 +11,18 @@ class SettingController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    print("SettingController loaded. user: ${user.value?.toJson()}");
   }
 
   Future<void> refreshUser() async {
     await _authService.getProfile();
+  }
+
+  void goToPrivacy() {
+    Get.toNamed(AppRoutes.PRIVACY);
+  }
+
+  void goToSupport() {
+    Get.toNamed(AppRoutes.SUPPORT);
   }
 
   logout() async {
