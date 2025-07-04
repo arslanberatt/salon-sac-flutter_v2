@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/custom_appbar.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/widgets/appointment_card.dart';
-import 'package:salon_sac_flutter_v2/modules/appointment/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 
 class CalendarPage extends GetView<AppointmentController> {
-  const CalendarPage({Key? key}) : super(key: key);
+  const CalendarPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +75,9 @@ class CalendarPage extends GetView<AppointmentController> {
                 itemBuilder: (context, index) {
                   final appt = list[index];
                   return Dismissible(
+                    direction: (appt.isDone == true || appt.isCancelled == true)
+                        ? DismissDirection.startToEnd
+                        : DismissDirection.horizontal,
                     key: ValueKey(appt.id),
                     background: Container(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),
@@ -123,9 +126,6 @@ class CalendarPage extends GetView<AppointmentController> {
                         );
                         if (confirm == true) {
                           await controller.markDone(appt.id!);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Randevu tamamlandı')),
-                          );
                         }
                         return false;
                       }

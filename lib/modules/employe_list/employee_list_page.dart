@@ -6,7 +6,7 @@ import 'package:salon_sac_flutter_v2/modules/employe_list/widgets/passive_employ
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 
 class EmployeeListPage extends GetView<EmployeeListController> {
-  const EmployeeListPage({Key? key}) : super(key: key);
+  const EmployeeListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +29,9 @@ class EmployeeListPage extends GetView<EmployeeListController> {
           ),
         ),
         body: Obx(() {
-          if (controller.isLoading)
+          if (controller.isLoading) {
             return const Center(child: CircularProgressIndicator());
+          }
           return TabBarView(
             children: [ActiveEmployeeList(), PassiveEmployeeList()],
           );

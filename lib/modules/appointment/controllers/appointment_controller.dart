@@ -10,23 +10,22 @@ import 'package:salon_sac_flutter_v2/repositories/user_repository.dart';
 import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 
 class AppointmentController extends BaseController {
-  final AppointmentRepository _appointmentRepository =
-      Get.find<AppointmentRepository>();
-  final UserRepository _userRepository = Get.find<UserRepository>();
-  final ServiceRepository _serviceRepository = Get.find<ServiceRepository>();
+  final AppointmentRepository _appointmentRepository = Get.find();
+  final UserRepository _userRepository = Get.find();
+  final ServiceRepository _serviceRepository = Get.find();
 
-  // Data lists
+  // Lists
   final employees = <AppUser>[].obs;
   final services = <AppService>[].obs;
   final appointments = <AppAppointment>[].obs;
   final filteredAppointments = <AppAppointment>[].obs;
 
-  // Filter criteria
+  // Filters
   final selectedDate = DateTime.now().obs;
   final selectedEmployee = Rxn<AppUser>();
   final selectedServices = <AppService>[].obs;
 
-  // Form fields
+  // Form
   final customerName = ''.obs;
   final customerPhone = ''.obs;
   final notes = ''.obs;
@@ -47,9 +46,15 @@ class AppointmentController extends BaseController {
   Future<void> loadInitialData() async {
     setLoading(true);
     try {
-      employees.assignAll(await _userRepository.getActiveUsers());
-      services.assignAll(await _serviceRepository.getServices());
-      await _loadAllAppointments();
+      final futures = await Future.wait([
+        _userRepository.getActiveUsers(),
+        _serviceRepository.getServices(),
+        _appointmentRepository.getAppointments(),
+      ]);
+      employees.assignAll(futures[0] as List<AppUser>);
+      services.assignAll(futures[1] as List<AppService>);
+      appointments.assignAll(futures[2] as List<AppAppointment>);
+      _applyFilters();
     } catch (e) {
       showErrorSnackbar(message: e.toString());
     } finally {
@@ -57,17 +62,22 @@ class AppointmentController extends BaseController {
     }
   }
 
-  /// Loads all appointments
+  Future<void> refreshAppointments() async {
+    await _loadAllAppointments();
+  }
+
   Future<void> _loadAllAppointments() async {
+    setLoading(true);
     try {
       final list = await _appointmentRepository.getAppointments();
       appointments.assignAll(list);
     } catch (e) {
       showErrorSnackbar(message: e.toString());
+    } finally {
+      setLoading(false);
     }
   }
 
-  /// Apply filters reactively
   void _applyFilters() {
     final day = selectedDate.value;
     final wantEmp = selectedEmployee.value;
@@ -76,14 +86,9 @@ class AppointmentController extends BaseController {
     filteredAppointments.value = appointments.where((a) {
       final st = a.startTime;
       if (st == null) return false;
-      // Date
       if (!(st.year == day.year && st.month == day.month && st.day == day.day))
         return false;
-      // Not done/cancelled
-      if (a.isDone == true || a.isCancelled == true) return false;
-      // Employee
       if (wantEmp != null && a.employee?.id != wantEmp.id) return false;
-      // Services
       if (wantSvcIds.isNotEmpty) {
         final hasIds = a.services.map((s) => s.id).toSet();
         if (!wantSvcIds.every(hasIds.contains)) return false;
@@ -95,20 +100,23 @@ class AppointmentController extends BaseController {
   void setDate(DateTime date) => selectedDate.value = date;
   void setEmployee(AppUser? emp) => selectedEmployee.value = emp;
   void toggleService(AppService svc) {
-    if (selectedServices.contains(svc)) {
-      selectedServices.remove(svc);
-    } else {
-      selectedServices.add(svc);
-    }
+    selectedServices.contains(svc)
+        ? selectedServices.remove(svc)
+        : selectedServices.add(svc);
   }
 
-  void goToProfile() {
-    Get.toNamed(AppRoutes.CALENDAR);
+  void clearForm() {
+    selectedEmployee.value;
+    customerName.value = '';
+    customerPhone.value = '';
+    selectedServices.clear();
+    selectedDate.value = DateTime.now();
   }
 
   Future<void> createAppointment() async {
     if (!(formKey.currentState?.validate() ?? false)) return;
     formKey.currentState?.save();
+
     setLoading(true);
     try {
       final appt = AppAppointment(
@@ -126,13 +134,12 @@ class AppointmentController extends BaseController {
         notes: notes.value,
       );
       await _appointmentRepository.createAppointment(appt);
-      Get.find<AppointmentController>().loadInitialData();
+      await loadInitialData();
       Get.back();
       showSuccessSnackbar(message: 'Randevu oluşturuldu');
       clearForm();
     } catch (e) {
       showErrorSnackbar(message: e.toString());
-      print(e.toString());
     } finally {
       setLoading(false);
     }
@@ -141,10 +148,9 @@ class AppointmentController extends BaseController {
   Future<void> markDone(String id) async {
     setLoading(true);
     try {
-      final updated = await _appointmentRepository.markAsDone(id);
-      // örn: listeyi yenilemek için
-      Get.find<AppointmentController>().loadInitialData();
-      Get.back(result: updated);
+      await _appointmentRepository.markAsDone(id);
+      await loadInitialData();
+      Get.back(result: true);
       showSuccessSnackbar(message: 'Randevu tamamlandı');
     } catch (e) {
       showErrorSnackbar(message: 'Tamamlama başarısız');
@@ -156,9 +162,9 @@ class AppointmentController extends BaseController {
   Future<void> cancel(String id) async {
     setLoading(true);
     try {
-      final updated = await _appointmentRepository.cancel(id);
-      Get.find<AppointmentController>().loadInitialData();
-      Get.back(result: updated);
+      await _appointmentRepository.cancel(id);
+      await loadInitialData();
+      Get.back(result: true);
       showSuccessSnackbar(message: 'Randevu iptal edildi');
     } catch (e) {
       showErrorSnackbar(message: 'İptal başarısız');
@@ -167,11 +173,43 @@ class AppointmentController extends BaseController {
     }
   }
 
-  void clearForm() {
-    selectedEmployee.value;
-    customerName.value = '';
-    customerPhone.value = '';
-    selectedServices.value = [];
-    selectedDate.value = DateTime.now();
+  Future<void> goToUpdate(AppAppointment appt) async {
+    final result = await Get.toNamed(
+      AppRoutes.UPDATEAPPOINTMENT,
+      arguments: appt,
+    );
+    if (result is AppAppointment) {
+      final updated = getAppointmentById(result.id);
+      if (updated != null) {
+        Get.back(result: updated);
+      }
+    }
+  }
+
+  Future<void> confirmAndCancel(String id) async {
+    final confirm = await Get.dialog<bool>(
+      AlertDialog(
+        title: const Text('Onayla'),
+        content: const Text(
+          'Bu randevuyu iptal etmek istediğinize emin misiniz?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: false),
+            child: const Text('Vazgeç'),
+          ),
+          ElevatedButton(
+            onPressed: () => Get.back(result: true),
+            child: const Text('Evet'),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) await cancel(id);
+  }
+
+  AppAppointment? getAppointmentById(String? id) {
+    if (id == null) return null;
+    return appointments.firstWhereOrNull((a) => a.id == id);
   }
 }

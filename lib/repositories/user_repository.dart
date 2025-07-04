@@ -79,8 +79,6 @@ class UserRepository extends GetxService {
 
     if (response.statusCode == 200) {
       final list = (response.data['data'] ?? []) as List;
-      print(list);
-      print(list.map((e) => AppUser.fromJson(e)).toList());
       return list.map((e) => AppUser.fromJson(e)).toList();
     }
     throw Exception("Kullanıcılar getirilirken bir hata oluştu!");

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:salon_sac_flutter_v2/modules/appointment/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
 import 'package:salon_sac_flutter_v2/models/app_service.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 

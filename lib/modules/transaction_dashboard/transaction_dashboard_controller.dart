@@ -8,51 +8,23 @@ class TransactionDashboardController extends BaseController {
 
   final montlyIncome = 0.0.obs;
   final montlyExpense = 0.0.obs;
-
-  void montlyTransaction() {
-    montlyIncome.value = 0.0;
-    montlyExpense.value = 0.0;
-    var thisDate = DateTime.now();
-    var thisYear = thisDate.year;
-    var thisMonth = thisDate.month;
-
-    if (allTransactions.isNotEmpty) {
-      var filteredTransaction = allTransactions.where((transaction) {
-        return transaction.date!.year == thisYear &&
-            transaction.date!.month == thisMonth;
-      }).toList();
-
-      for (var tr in filteredTransaction) {
-        if (tr.category?.type == 'gelir') {
-          montlyIncome.value += tr.amount!;
-        } else if (tr.category?.type == 'gider') {
-          montlyExpense.value += tr.amount!;
-        }
-      }
-    } else {
-      montlyIncome.value = 0.0;
-      montlyExpense.value = 0.0;
-    }
-  }
+  final totalAmount = 0.0.obs;
+  final allTransactions = <AppTransaction>[].obs;
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
     _transactionRepository = Get.find<TransactionRepository>();
-    await getTransactions();
+    getTransactions();
   }
 
-  Future<void> refreshDashboard() async {
-    await getTransactions();
-  }
-
-  final allTransactions = <AppTransaction>[].obs;
-  Future getTransactions() async {
+  Future<void> getTransactions() async {
+    setLoading(true);
     try {
-      setLoading(true);
       final transactions = await _transactionRepository.getTransactions();
       allTransactions.value = transactions;
-      montlyTransaction();
+      calculateMonthlyTransactions();
+      calculateTotalAmount();
     } catch (e) {
       showErrorSnackbar(message: "Kasa işlemleri çekilirken sorun oluştu!");
     } finally {
@@ -60,15 +32,66 @@ class TransactionDashboardController extends BaseController {
     }
   }
 
+  Future<void> refreshDashboard() async {
+    await getTransactions();
+  }
+
+  void calculateTotalAmount() {
+    totalAmount.value = allTransactions.where((t) => t.canceled != true).fold(
+      0.0,
+      (sum, t) {
+        if (t.category?.type == 'gelir') {
+          return sum + (t.amount ?? 0);
+        } else if (t.category?.type == 'gider') {
+          return sum - (t.amount ?? 0);
+        }
+        return sum;
+      },
+    );
+  }
+
+  void calculateMonthlyTransactions() {
+    montlyIncome.value = 0.0;
+    montlyExpense.value = 0.0;
+
+    final now = DateTime.now();
+
+    for (final tr in allTransactions) {
+      if (tr.date == null || tr.canceled == true)
+        continue; // ⬅️ iptal edilenleri atla
+
+      if (tr.date!.year == now.year && tr.date!.month == now.month) {
+        if (tr.category?.type == 'gelir') {
+          montlyIncome.value += tr.amount ?? 0;
+        } else if (tr.category?.type == 'gider') {
+          montlyExpense.value += tr.amount ?? 0;
+        }
+      }
+    }
+  }
+
   Future<void> cancelTransaction(String transactionId) async {
-    setLoading(true);
     try {
-      await _transactionRepository.cancelTransaction(transactionId);
-      allTransactions.removeWhere((element) => element.id == transactionId);
-      montlyTransaction();
-      showSuccessSnackbar(message: 'İşlem iptal edildi!');
+      setLoading(true);
+      final result = await _transactionRepository.cancelTransaction(
+        transactionId,
+      );
+      if (result != null) {
+        final index = allTransactions.indexWhere((t) => t.id == transactionId);
+        if (index != -1) {
+          allTransactions[index] = result; // güncel transaction bilgisi
+          allTransactions.refresh();
+          calculateMonthlyTransactions();
+          calculateTotalAmount(); // yeniden hesapla
+          showSuccessSnackbar(message: 'İşlem iptal edildi!');
+        }
+      } else {
+        showErrorSnackbar(
+          message: 'İşlem zaten iptal edilmiş veya bulunamadı.',
+        );
+      }
     } catch (e) {
-      showErrorSnackbar(message: 'İşlem iptal edilirken bir hata oluştu!');
+      showErrorSnackbar(message: 'İşlem iptal edilirken hata oluştu!');
     } finally {
       setLoading(false);
     }

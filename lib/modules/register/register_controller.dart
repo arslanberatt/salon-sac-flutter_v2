@@ -44,7 +44,6 @@ class RegisterController extends BaseController {
         );
       }
     } catch (e) {
-      print('Register Error: $e');
       Get.snackbar('Kayıt Başarısız', 'Bir hata oluştu: $e');
     } finally {
       setLoading(false);

@@ -1,4 +1,3 @@
-// update_service_page.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/models/app_service.dart';
@@ -6,6 +5,8 @@ import 'package:salon_sac_flutter_v2/modules/service/controllers/update_service_
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class UpdateServicePage extends GetView<UpdateServiceController> {
+  const UpdateServicePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

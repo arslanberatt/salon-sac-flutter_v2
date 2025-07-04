@@ -37,8 +37,9 @@ abstract class ApiConstants {
   // // Appointments
   static const String appointments = '/api/appointments';
   static const String createAppointment = '/api/create-appointment';
-  static const String markAsDone = '/api/appointments/mark-as-done';
-  static const String cancelAppointment = '/api/appointments/cancel';
+  static const String markAsDone = '/api/mark-as-done';
+  static const String cancelAppointment = '/api/cancel';
+  static const String updateAppointments = '/api/update-appointment';
 
   // // Salary
   // static const String mySalaryRecords = '/my-salary-records';
@@ -117,7 +118,6 @@ class ApiServices extends GetxService {
       );
     } catch (e) {
       if (e is DioException) {
-        print('HATA STATUS: ${e.response?.statusCode}');
         print('HATA DATA: ${e.response?.data}');
       }
       rethrow;

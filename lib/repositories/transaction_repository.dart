@@ -15,45 +15,42 @@ class TransactionRepository extends GetxService {
   Future<List<AppTransaction>> getTransactions() async {
     final response = await _apiServices.get(ApiConstants.transactions);
     if (response.statusCode == 200) {
-      final dataMap = response.data['data'] as Map<String, dynamic>;
-      final rawList = (dataMap['transactions'] as List<dynamic>?) ?? [];
-      final transactions = rawList
-          .map((e) => AppTransaction.fromJson(e))
-          .toList();
-      return transactions;
+      final data = response.data['data'];
+      if (data is List) {
+        return data.map((e) => AppTransaction.fromJson(e)).toList();
+      }
+      throw Exception('Beklenmeyen data formatı: ${data.runtimeType}');
     }
     throw Exception('Transactionlar getirilirken bir hata oluştu');
   }
 
-  Future<AppTransaction> createTransaction(AppTransaction transaction) async {
+  Future<void> createTransaction(AppTransaction transaction) async {
     final response = await _apiServices.post(
       ApiConstants.createTransaction,
       data: transaction.toJson(),
     );
+
     if (response.statusCode == 201) {
-      return AppTransaction.fromJson(response.data);
+      return;
     }
-    throw Exception('Transactionlar eklenirken bir hata oluştu');
+
+    throw Exception('Transaction eklenirken bir hata oluştu');
   }
 
   Future<AppTransaction?> cancelTransaction(String id) async {
     final res = await _apiServices.put(
       '${ApiConstants.cancelTransaction}/$id',
-      options: Options(
-        validateStatus: (status) {
-          return status! < 500;
-        },
-      ),
+      options: Options(validateStatus: (status) => status! < 500),
     );
+    if (res.statusCode == 200) {
+      final data = res.data['data'];
 
-    if (res.statusCode == 200 && res.data['data'] != null) {
-      return AppTransaction.fromJson(res.data['data']);
-    } else if (res.statusCode == 404) {
-      print('İşlem bulunamadı veya zaten iptal edilmiş.');
-      return null;
-    } else {
-      print('Sunucu hatası: ${res.statusCode}');
-      return null;
+      if (data is Map<String, dynamic>) {
+        return AppTransaction.fromJson(data);
+      } else {
+        return null;
+      }
     }
+    return null;
   }
 }

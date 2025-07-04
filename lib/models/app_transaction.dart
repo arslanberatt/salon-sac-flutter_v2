@@ -13,11 +13,12 @@ class AppTransaction {
   final String? userId;
   final Category? category;
   final String? createdBy;
-  final bool? canceled;
+  bool? canceled;
   final DateTime? canceledAt;
   final String? canceledBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? type;
 
   AppTransaction({
     this.id,
@@ -32,6 +33,7 @@ class AppTransaction {
     this.canceledBy,
     this.createdAt,
     this.updatedAt,
+    this.type,
   });
 
   factory AppTransaction.fromJson(Map<String, dynamic> json) => AppTransaction(
@@ -39,13 +41,13 @@ class AppTransaction {
     amount: (json["amount"] as num?)?.toDouble(),
     description: json["description"] as String?,
     date: json["date"] != null ? DateTime.parse(json["date"] as String) : null,
-    createdBy: json["createdBy"] != null
-        ? (json["createdBy"]["_id"] as String?)
-        : null,
+    createdBy: json["createdBy"] is Map
+        ? json["createdBy"]["_id"] as String?
+        : json["createdBy"] as String?,
     userId: json["user_id"] as String?,
-    category: json["category"] != null
+    category: json["category"] is Map<String, dynamic>
         ? Category.fromJson(json["category"] as Map<String, dynamic>)
-        : null,
+        : Category(id: json["category"] as String?), // ← düzeltme burada!
     canceled: json["canceled"] as bool?,
     canceledAt: json["canceledAt"] != null
         ? DateTime.parse(json["canceledAt"] as String)
@@ -57,6 +59,7 @@ class AppTransaction {
     updatedAt: json["updatedAt"] != null
         ? DateTime.parse(json["updatedAt"] as String)
         : null,
+    type: json["type"] as String?,
   );
 
   Map<String, dynamic> toJson() {
@@ -79,12 +82,13 @@ class AppTransaction {
       "canceledBy": canceledBy,
       "createdAt": createdAt?.toUtc().toIso8601String(),
       "updatedAt": updatedAt?.toUtc().toIso8601String(),
+      "type": type, // ✅ json’a yazıldı
     };
   }
 
   @override
   String toString() {
-    return 'AppTransaction(id: $id, amount: $amount, desc: $description, date: $date, category: ${category?.name})';
+    return 'AppTransaction(id: $id, amount: $amount, desc: $description, date: $date, category: ${category?.name}, type: $type)';
   }
 }
 

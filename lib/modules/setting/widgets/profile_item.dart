@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
-class ProfileTitle extends StatelessWidget {
+class ProfileItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final String phone;
-  const ProfileTitle({
+  const ProfileItem({
     required this.title,
     required this.subtitle,
     super.key,

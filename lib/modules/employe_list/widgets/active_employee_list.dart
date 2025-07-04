@@ -38,12 +38,9 @@ class ActiveEmployeeList extends GetView<EmployeeListController> {
               ),
               confirmDismiss: (direction) async {
                 if (direction == DismissDirection.startToEnd) {
-                  Get.toNamed(
-                    AppRoutes.EMPLOYEEMANAGEMENT,
-                    arguments: employee,
-                  );
+                  Get.toNamed(AppRoutes.EMPLOYEEHISTORY, arguments: employee);
                 }
-                if (direction == DismissDirection.startToEnd) {
+                if (direction == DismissDirection.endToStart) {
                   Get.toNamed(
                     AppRoutes.EMPLOYEEMANAGEMENT,
                     arguments: employee,
@@ -51,7 +48,22 @@ class ActiveEmployeeList extends GetView<EmployeeListController> {
                 }
                 return false;
               },
-              child: ListTile(title: Text(employee.name ?? '')),
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 24,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage: employee.avatar != null
+                      ? NetworkImage(employee.avatar!)
+                      : null,
+                  child: employee.avatar == null
+                      ? Icon(Icons.person, size: 12, color: Colors.white)
+                      : null,
+                ),
+                title: Text(
+                  '${employee.name ?? ''} ${employee.lastname ?? ''}',
+                ),
+                subtitle: Text(employee.phone ?? '-'),
+              ),
             );
           },
         ),

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:salon_sac_flutter_v2/modules/appointment/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
 
 class AppointmentSaveButton extends GetView<AppointmentController> {
   const AppointmentSaveButton({super.key});
