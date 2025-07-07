@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/modules/admin/admin_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/admin/admin_page.dart';
+import 'package:salon_sac_flutter_v2/modules/advance/advance_page.dart';
+import 'package:salon_sac_flutter_v2/modules/advance_request/advance_request_page.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/appointment_detail_page.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/appointment_page.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/update_appointment_page.dart';
@@ -57,6 +59,8 @@ abstract class AppRoutes {
   static const RESETPASSWORD = '/reset-password';
   static const RESETCODE = '/reset-code';
   static const FORGOTPASSWORD = '/forgot-password';
+  static const ADVANCE = '/advance';
+  static const ADVANCEREQUEST = '/advance-request';
 }
 
 class AppPages {
@@ -118,5 +122,7 @@ class AppPages {
     GetPage(name: AppRoutes.FORGOTPASSWORD, page: () => ForgotPasswordPage()),
     GetPage(name: AppRoutes.RESETPASSWORD, page: () => ResetPasswordPage()),
     GetPage(name: AppRoutes.RESETCODE, page: () => ResetCodePage()),
+    GetPage(name: AppRoutes.ADVANCE, page: () => AdvancePage()),
+    GetPage(name: AppRoutes.ADVANCEREQUEST, page: () => AdvanceRequestPage()),
   ];
 }

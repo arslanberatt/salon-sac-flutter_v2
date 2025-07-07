@@ -23,6 +23,9 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           bottom: const TabBar(
+            labelColor: AppColors.primary,
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: AppColors.primary,
             tabs: [
               Tab(text: 'Bilgiler'),
               Tab(text: 'Randevular'),

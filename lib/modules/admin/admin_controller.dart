@@ -17,6 +17,10 @@ class AdminController extends BaseController {
   void goToTransaction() {
     Get.toNamed(AppRoutes.TRANSACTION);
   }
+  
+  void goToAdvance() {
+    Get.toNamed(AppRoutes.ADVANCE);
+  }
 
   void goToAppointment() {
     Get.toNamed(AppRoutes.APPOINTMENT);

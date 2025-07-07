@@ -14,7 +14,15 @@ class EmployeeController extends BaseController {
     Get.offAllNamed(AppRoutes.LOGIN);
   }
 
-  void goToSetting() {
-    Get.toNamed(AppRoutes.SETTING);
+  void goToAppointment() {
+    Get.toNamed(AppRoutes.APPOINTMENT);
   }
+
+  void goToCalendar() {
+    Get.toNamed(AppRoutes.CALENDAR);
+  }
+
+  // void goToAppointment() {
+  //   Get.toNamed(AppRoutes.APPOINTMENT);
+  // }
 }

@@ -9,11 +9,21 @@ import 'package:salon_sac_flutter_v2/repositories/appointment_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/service_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/user_repository.dart';
 import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
+import 'package:salon_sac_flutter_v2/services/auth_service.dart';
 
 class AppointmentController extends BaseController {
   final AppointmentRepository _appointmentRepository = Get.find();
   final UserRepository _userRepository = Get.find();
   final ServiceRepository _serviceRepository = Get.find();
+
+  Future<bool> isAdmin() async {
+    final user = Get.find<AuthService>().currentUser.value;
+    if (user?.isAdmin == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // Lists
   final employees = <AppUser>[].obs;
@@ -52,7 +62,20 @@ class AppointmentController extends BaseController {
         _serviceRepository.getServices(),
         _appointmentRepository.getAppointments(),
       ]);
-      employees.assignAll(futures[0] as List<AppUser>);
+
+      final currentUser = Get.find<AuthService>().currentUser.value;
+      final allUsers = futures[0] as List<AppUser>;
+
+      if (currentUser != null &&
+          currentUser.isAdmin != true &&
+          currentUser.isMod != true) {
+        employees.assignAll(
+          allUsers.where((u) => u.id == currentUser.id).toList(),
+        );
+      } else {
+        employees.assignAll(allUsers);
+      }
+
       services.assignAll(futures[1] as List<AppService>);
       appointments.assignAll(futures[2] as List<AppAppointment>);
       _applyFilters();
@@ -139,8 +162,9 @@ class AppointmentController extends BaseController {
       clearForm();
       await loadInitialData();
       Get.back();
+      showSuccessSnackbar(message: 'Randevu başarı ile oluşturuldu!');
     } catch (e) {
-      showErrorSnackbar(message: e.toString());
+      showErrorSnackbar(message: 'Randevu oluşturulurken hata oluştu!');
     } finally {
       setLoading(false);
     }

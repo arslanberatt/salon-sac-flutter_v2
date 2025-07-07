@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Icons.add_task_rounded),
         ),
         IconButton(
-          onPressed: () => Get.find<AdminController>().goToTransaction(),
+          onPressed: () => Get.find<AdminController>().goToAdvance(),
           icon: const Icon(Icons.notifications_none_rounded),
         ),
       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/services/auth_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/custom_appbar.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/widgets/appointment_card.dart';
@@ -8,12 +9,20 @@ import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 
 class CalendarPage extends GetView<AppointmentController> {
-  const CalendarPage({super.key});
+  CalendarPage({super.key});
+  final user = Get.find<AuthService>().currentUser.value;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: (user != null && user?.isAdmin == true)
+          ? const CustomAppBar()
+          : AppBar(
+              title: Text(
+                'Salon Saç',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
       body: Column(
         children: [
           Obx(() {

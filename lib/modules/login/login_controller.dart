@@ -31,7 +31,6 @@ class LoginController extends BaseController {
         password: password.value,
       );
       if (user != null) {
-        // Opsiyonel: "rememberMe" burada kullanılabilir (local storage vs)
         if (user.isAdmin == true) {
           Get.offAllNamed(AppRoutes.ADMIN);
         } else {

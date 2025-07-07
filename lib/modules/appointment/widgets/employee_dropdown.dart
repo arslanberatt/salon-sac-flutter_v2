@@ -6,7 +6,7 @@ import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class EmployeeDropdown extends GetView<AppointmentController> {
-  const EmployeeDropdown({Key? key}) : super(key: key);
+  const EmployeeDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {

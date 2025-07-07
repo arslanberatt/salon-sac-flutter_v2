@@ -46,10 +46,11 @@ abstract class ApiConstants {
   static const String mySalaryRecords = '/api/my-salary-records';
   static const String allSalaryRecords = '/api/salary-records';
 
-  // // Advance
-  // static const String requestAdvance = '/advance-request';
-  // static const String myAdvanceRequests = '/my-advance-requests';
-  // static const String allAdvanceRequests = '/all-advance-requests';
+  // Advance
+  static const String createAdvanceRequest = '/api/advance-request';
+  static const String myAdvanceRequests = '/api/my-advance-requests';
+  static const String allAdvanceRequests = '/api/all-advance-requests';
+  static const String theAdvanceRequest = '/api/advance-request';
 }
 
 class ApiServices extends GetxService {

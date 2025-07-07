@@ -1,4 +1,5 @@
 import 'package:get/instance_manager.dart';
+import 'package:salon_sac_flutter_v2/modules/advance_request/advance_request_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/employee/employee_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/employee_dashboard/employee_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_controller.dart';
@@ -10,6 +11,10 @@ class EmployeeBindings extends Bindings {
     Get.lazyPut<SettingController>(() => SettingController());
     Get.lazyPut<EmployeeDashboardController>(
       () => EmployeeDashboardController(),
+    );
+    Get.lazyPut<AdvanceRequestController>(
+      () => AdvanceRequestController(),
+      fenix: true,
     );
   }
 }
