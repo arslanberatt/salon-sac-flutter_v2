@@ -16,12 +16,12 @@ class SettingsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? AppColors.darkCard
-          : AppColors.lightCard,
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.borderRadiusS),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.darkCard
+            : AppColors.lightCard,
       ),
       margin: const EdgeInsets.only(bottom: AppSizes.spacingS),
       child: ListTile(

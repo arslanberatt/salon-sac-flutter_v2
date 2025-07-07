@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_sac_flutter_v2/models/app_appointment.dart';
 import 'package:salon_sac_flutter_v2/models/app_user.dart';
-import 'package:salon_sac_flutter_v2/modules/appointment/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
-class AppointmentCard extends StatelessWidget {
+class AppointmentCard extends GetView<AppointmentController> {
   final AppAppointment appointment;
   final String? header;
 
@@ -15,8 +15,6 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<AppointmentController>();
-
     final emp =
         (appointment.employee?.name != null &&
             appointment.employee?.lastname != null)
@@ -37,70 +35,41 @@ class AppointmentCard extends StatelessWidget {
     final endTime = appointment.startTime?.add(
       Duration(minutes: totalDuration),
     );
-    final dateFmt = DateFormat('dd MMM yyyy – HH:mm', 'tr_TR');
+    final dateFmt = DateFormat('dd MMM yyyy   HH:mm', 'tr_TR');
     final timeFmt = DateFormat('HH:mm', 'tr_TR');
 
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(AppSizes.paddingS),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (header != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Text(
-                header!,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '${emp.name} ${emp.lastname}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    appointment.customerName ?? '',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+                  _statusBadge(appointment),
                 ],
               ),
               Text(
-                DateFormat('dd MMM', 'tr_TR').format(appointment.startTime!),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              Text(
-                dateFmt.format(appointment.startTime!),
+                appointment.customerName ?? '',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              if (endTime != null)
-                Text(
-                  ' - ${timeFmt.format(endTime)}',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
             ],
           ),
-          const SizedBox(height: 6),
+
+          const SizedBox(height: AppSizes.spacingS),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  appointment.notes ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+              Text(
+                '${dateFmt.format(appointment.startTime!)} - ${timeFmt.format(endTime!)}',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               Text(
                 NumberFormat.currency(
@@ -108,15 +77,38 @@ class AppointmentCard extends StatelessWidget {
                   decimalDigits: 2,
                   locale: 'tr_TR',
                 ).format(appointment.price ?? 0),
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(color: AppColors.primaryDark),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.lightCard
+                      : AppColors.darkCard,
+                ),
               ),
             ],
           ),
           Divider(height: AppSizes.spacingM),
         ],
       ),
+    );
+  }
+
+  Widget _statusBadge(AppAppointment appt) {
+    String label;
+    Color text;
+
+    if (appt.isDone == true) {
+      label = 'Tamamlandı';
+      text = Colors.green.shade800;
+    } else if (appt.isCancelled == true) {
+      label = 'İptal Edildi';
+      text = Colors.red.shade800;
+    } else {
+      label = 'Beklemede';
+      text = Colors.orange.shade800;
+    }
+
+    return Text(
+      label,
+      style: TextStyle(color: text, fontWeight: FontWeight.bold, fontSize: 12),
     );
   }
 }

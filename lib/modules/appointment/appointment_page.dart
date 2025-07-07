@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:salon_sac_flutter_v2/modules/appointment/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/widgets/appointment_date.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/widgets/appointment_save_button.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/widgets/employee_dropdown.dart';

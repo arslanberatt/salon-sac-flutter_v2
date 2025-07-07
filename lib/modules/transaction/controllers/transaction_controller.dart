@@ -33,13 +33,14 @@ class TransactionController extends BaseController {
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
 
-    final selectedCat = categories.firstWhere(
-      (c) => c.id == selectedCategoryId.value,
-      orElse: () => throw Exception('Kategori seçilmedi'),
-    );
-
     try {
       setLoading(true);
+
+      final selectedCat = categories.firstWhere(
+        (c) => c.id == selectedCategoryId.value,
+        orElse: () => throw Exception('Kategori seçilmedi'),
+      );
+
       final transaction = AppTransaction(
         amount: amount.value,
         description: description.value,
@@ -50,21 +51,15 @@ class TransactionController extends BaseController {
           type: selectedCat.type,
         ),
         canceled: false,
+        type: selectedCat.type,
       );
-
-      final result = await _transactionRepository.createTransaction(
-        transaction,
-      );
-      if (result == true) {
-        Get.find<TransactionDashboardController>().refreshDashboard();
-        Get.back();
-        showSuccessSnackbar(message: 'Transaction başarıyla eklendi');
-        clearForm();
-      } else {
-        showErrorSnackbar(message: 'İşlem oluşturulurken hata oluştu!');
-      }
+      await _transactionRepository.createTransaction(transaction);
+      Get.find<TransactionDashboardController>().refreshDashboard();
+      Get.back();
+      showSuccessSnackbar(message: 'İşlem başarıyla eklendi');
+      clearForm();
     } catch (e) {
-      showErrorSnackbar(message: e.toString());
+      showErrorSnackbar(message: 'İşlem oluşturulamadı: $e');
     } finally {
       setLoading(false);
     }
@@ -76,10 +71,8 @@ class TransactionController extends BaseController {
       final result = await _categoryRepository.getCategories();
       categories.value = result;
       getFirstCategory();
-      print(result);
     } catch (e) {
       showErrorSnackbar(message: e.toString());
-      print(e.toString());
     } finally {
       setLoading(false);
     }

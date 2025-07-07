@@ -2,61 +2,132 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:salon_sac_flutter_v2/models/app_appointment.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/controllers/appointment_controller.dart';
+import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
-class AppointmentDetailPage extends StatelessWidget {
-  const AppointmentDetailPage({super.key});
+class AppointmentDetailPage extends GetView<AppointmentController> {
+  AppointmentDetailPage({super.key});
+
+  final Rx<AppAppointment> appt = (Get.arguments as AppAppointment).obs;
 
   @override
   Widget build(BuildContext context) {
-    final AppAppointment appt = Get.arguments as AppAppointment;
-    final totalDuration = appt.services.fold<int>(
-      0,
-      (sum, s) => sum + (s.duration ?? 0),
-    );
-    final endTime = appt.startTime?.add(Duration(minutes: totalDuration));
     final fmtDate = DateFormat('dd MMM yyyy, HH:mm', 'tr_TR');
     final fmtTime = DateFormat('HH:mm', 'tr_TR');
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Randevu Detay')),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.paddingM),
-        child: ListView(
-          children: [
-            _row(
-              'Personel:',
-              '${appt.employee?.name} ${appt.employee?.lastname}',
-            ),
-            _row('Müşteri:', appt.customerName ?? '-'),
-            _row('Telefon:', appt.customerPhone ?? '-'),
-            _row('Başlangıç:', fmtDate.format(appt.startTime!)),
-            if (endTime != null) _row('Bitiş:', fmtTime.format(endTime)),
-            _row('Toplam Süre:', '$totalDuration dk'),
-            _sectionTitle('Hizmetler'),
-            ...appt.services.map(
-              (s) => ListTile(
-                title: Text(s.name ?? ''),
-                subtitle: Text('${s.duration} dk · ₺${s.price}'),
-              ),
-            ),
-            _row('Notlar:', appt.notes ?? '-'),
-            _row('Ücret:', '₺${appt.price?.toStringAsFixed(2) ?? '0.00'}'),
-            _row(
-              'Durum:',
-              appt.isDone == true
-                  ? 'Tamamlandı'
-                  : appt.isCancelled == true
-                  ? 'İptal edildi'
-                  : 'Beklemede',
-            ),
-          ],
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ),
+      body: Obx(() {
+        final a = appt.value;
+        final totalDuration = a.services.fold<int>(
+          0,
+          (sum, s) => sum + (s.duration ?? 0),
+        );
+        final endTime = a.startTime?.add(Duration(minutes: totalDuration));
+
+        return Padding(
+          padding: const EdgeInsets.all(AppSizes.paddingM),
+          child: ListView(
+            children: [
+              _sectionTitle('TOPLAM ÜCRET'),
+              const SizedBox(height: 4),
+              Text(
+                '₺${(a.price ?? 0).toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.lightCard
+                      : AppColors.darkCard,
+                ),
+              ),
+              const SizedBox(height: 16),
+              _sectionTitle('RANDEVU DETAYLARI'),
+              const SizedBox(height: 8),
+              _infoRow(
+                'Personel',
+                '${a.employee?.name} ${a.employee?.lastname}',
+              ),
+              _infoRow('Müşteri', a.customerName ?? '-'),
+              _infoRow('Telefon', a.customerPhone ?? '-'),
+              _infoRow('Başlangıç', fmtDate.format(a.startTime!)),
+              if (endTime != null) _infoRow('Bitiş', fmtTime.format(endTime)),
+              _infoRow('Toplam Süre', '$totalDuration dk'),
+              const Divider(height: 32),
+              _sectionTitle('HİZMETLER'),
+              ...a.services.map(
+                (s) => _infoRow(
+                  s.name ?? '-',
+                  '₺${s.price?.toStringAsFixed(2) ?? '-'}',
+                ),
+              ),
+              const SizedBox(height: 16),
+              _infoRow('Notlar', a.notes ?? '-'),
+              _infoRow(
+                'Durum',
+                a.isDone == true
+                    ? 'Tamamlandı'
+                    : a.isCancelled == true
+                    ? 'İptal edildi'
+                    : 'Beklemede',
+              ),
+              const SizedBox(height: 32),
+              if (a.isDone != true && a.isCancelled != true)
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.inputBorder
+                              : AppColors.textWhite,
+                          side: const BorderSide(color: AppColors.primary),
+                          foregroundColor: AppColors.primary,
+                        ),
+                        onPressed: () async {
+                          await controller.goToUpdate(appt.value);
+                        },
+                        child: const Text('Düzenle'),
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.paddingS),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.primaryLight
+                              : AppColors.primary,
+                          side: BorderSide(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.primaryLight
+                                : AppColors.primary,
+                          ),
+                          foregroundColor: AppColors.textWhite,
+                        ),
+                        onPressed: () =>
+                            controller.confirmAndCancel(appt.value.id!),
+                        child: const Text('İptal Et'),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Widget _row(String label, String value) => Padding(
+  Widget _infoRow(String label, String value) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Row(
       children: [
@@ -64,7 +135,10 @@ class AppointmentDetailPage extends StatelessWidget {
           flex: 2,
           child: Text(
             label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: AppSizes.fontS,
+            ),
           ),
         ),
         Expanded(flex: 3, child: Text(value)),
@@ -73,10 +147,7 @@ class AppointmentDetailPage extends StatelessWidget {
   );
 
   Widget _sectionTitle(String text) => Padding(
-    padding: const EdgeInsets.only(top: 12, bottom: 4),
-    child: Text(
-      text,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    ),
+    padding: const EdgeInsets.only(top: 8, bottom: 4),
+    child: Text(text, style: const TextStyle(fontSize: AppSizes.fontS)),
   );
 }

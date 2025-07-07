@@ -51,16 +51,11 @@ class SettingPage extends GetView<SettingController> {
                             : const Icon(Icons.person, size: 48),
                       ),
                       const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProfileTitle(
-                            title:
-                                '${controller.user.value?.name ?? ''} ${controller.user.value?.lastname ?? ''}',
-                            subtitle: controller.user.value?.email ?? '',
-                            phone: controller.user.value?.phone ?? '',
-                          ),
-                        ],
+                      ProfileItem(
+                        title:
+                            '${controller.user.value?.name ?? ''} ${controller.user.value?.lastname ?? ''}',
+                        subtitle: controller.user.value?.email ?? '',
+                        phone: controller.user.value?.phone ?? '',
                       ),
                     ],
                   ),

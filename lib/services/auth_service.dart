@@ -65,8 +65,6 @@ class AuthService extends GetxService {
   Future<AppUser?> getProfile() async {
     try {
       final response = await _apiServices.get(ApiConstants.profile);
-      print('🔍 PROFILE RAW RESPONSE => ${response.data}');
-
       if (response.statusCode == 200) {
         final user = AppUser.fromJson(response.data["data"]);
         currentUser.value = user;

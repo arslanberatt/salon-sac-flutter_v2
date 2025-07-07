@@ -24,7 +24,7 @@ class AppAppointment {
     this.employee,
     this.customerName,
     this.customerPhone,
-    required this.services,
+    this.services = const [],
     this.startTime,
     this.isDone,
     this.isCancelled,

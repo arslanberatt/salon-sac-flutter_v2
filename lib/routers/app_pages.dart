@@ -3,10 +3,12 @@ import 'package:salon_sac_flutter_v2/modules/admin/admin_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/admin/admin_page.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/appointment_detail_page.dart';
 import 'package:salon_sac_flutter_v2/modules/appointment/appointment_page.dart';
+import 'package:salon_sac_flutter_v2/modules/appointment/update_appointment_page.dart';
 import 'package:salon_sac_flutter_v2/modules/calendar/calendar_page.dart';
 import 'package:salon_sac_flutter_v2/modules/employe_list/employee_list_page.dart';
 import 'package:salon_sac_flutter_v2/modules/employee/employee_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/employee/employee_page.dart';
+import 'package:salon_sac_flutter_v2/modules/employee_history/employee_history_page.dart';
 import 'package:salon_sac_flutter_v2/modules/employee_managment/employee_managment_page.dart';
 import 'package:salon_sac_flutter_v2/modules/login/login_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/login/login_page.dart';
@@ -16,6 +18,9 @@ import 'package:salon_sac_flutter_v2/modules/profile/profile_page.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/update_profile_page.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/forgot_password_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/reset_code_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/reset_password_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/update_service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
@@ -47,6 +52,11 @@ abstract class AppRoutes {
   static const APPOINTMENT = '/appointment';
   static const CALENDAR = '/calendar';
   static const APPOINTMENTDETAIL = '/appointment-detail';
+  static const UPDATEAPPOINTMENT = '/appointment-appointment';
+  static const EMPLOYEEHISTORY = '/employe-history';
+  static const RESETPASSWORD = '/reset-password';
+  static const RESETCODE = '/reset-code';
+  static const FORGOTPASSWORD = '/forgot-password';
 }
 
 class AppPages {
@@ -92,6 +102,10 @@ class AppPages {
     GetPage(name: AppRoutes.APPOINTMENT, page: () => AppointmentPage()),
     GetPage(name: AppRoutes.CALENDAR, page: () => CalendarPage()),
     GetPage(
+      name: AppRoutes.UPDATEAPPOINTMENT,
+      page: () => UpdateAppointmentPage(),
+    ),
+    GetPage(
       name: AppRoutes.APPOINTMENTDETAIL,
       page: () => AppointmentDetailPage(),
     ),
@@ -100,5 +114,9 @@ class AppPages {
       page: () => EmployeeManagmentPage(),
     ),
     GetPage(name: AppRoutes.EMPLOYEELIST, page: () => EmployeeListPage()),
+    GetPage(name: AppRoutes.EMPLOYEEHISTORY, page: () => EmployeeHistoryPage()),
+    GetPage(name: AppRoutes.FORGOTPASSWORD, page: () => ForgotPasswordPage()),
+    GetPage(name: AppRoutes.RESETPASSWORD, page: () => ResetPasswordPage()),
+    GetPage(name: AppRoutes.RESETCODE, page: () => ResetCodePage()),
   ];
 }

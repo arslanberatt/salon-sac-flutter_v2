@@ -37,11 +37,19 @@ class AppointmentRepository extends GetxService {
     throw Exception('Randevu oluşturulurken hata oluştu!');
   }
 
-  Future<AppAppointment> markAsDone(String id) async {
-    final res = await _apiServices.put(
-      ApiConstants.markAsDone,
-      data: {'id': id},
+  Future<AppAppointment> updateAppointment(AppAppointment appointment) async {
+    final response = await _apiServices.put(
+      '${ApiConstants.updateAppointments}/${appointment.id}',
+      data: appointment.toJson(),
     );
+    if (response.statusCode == 200) {
+      return AppAppointment.fromJson(response.data);
+    }
+    throw Exception("Randevu güncellenirken bir hata oluştu!");
+  }
+
+  Future<AppAppointment> markAsDone(String id) async {
+    final res = await _apiServices.put('${ApiConstants.markAsDone}/$id');
     if (res.statusCode == 200) {
       return AppAppointment.fromJson(res.data['data']);
     }
@@ -49,10 +57,7 @@ class AppointmentRepository extends GetxService {
   }
 
   Future<AppAppointment> cancel(String id) async {
-    final res = await _apiServices.put(
-      ApiConstants.cancelAppointment,
-      data: {'id': id},
-    );
+    final res = await _apiServices.put('${ApiConstants.cancelAppointment}/$id');
     if (res.statusCode == 200) {
       return AppAppointment.fromJson(res.data['data']);
     }

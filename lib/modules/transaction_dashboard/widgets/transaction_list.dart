@@ -11,125 +11,120 @@ class TransactionList extends GetView<TransactionDashboardController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.allTransactions.isEmpty) {
-        return Center(child: Text('Henüz bir işlem yok'));
+      final transactions = controller.allTransactions;
+
+      if (transactions.isEmpty) {
+        return const Center(child: Text('Henüz bir işlem yok'));
       }
-      return Container(
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            var theTransaction = controller.allTransactions[index];
-            var category = theTransaction.category;
-            return Dismissible(
-              key: ValueKey(theTransaction.id),
-              direction: theTransaction.canceled == true
-                  ? DismissDirection.startToEnd
-                  : DismissDirection.horizontal,
-              background: Container(
-                color: Colors.blueGrey.withOpacity(0.1),
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Icon(Icons.info_outline, color: Colors.blueGrey),
-              ),
-              secondaryBackground: Container(
-                color: Colors.red.withOpacity(0.1),
-                alignment: Alignment.centerRight,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: const Icon(Icons.delete, color: Colors.red),
-              ),
-              confirmDismiss: (direction) async {
-                if (direction == DismissDirection.startToEnd) {
-                  _showCancelDetails(context, theTransaction);
-                  return false; // listeden kaldırma
-                }
-                if (direction == DismissDirection.endToStart &&
-                    theTransaction.canceled == false) {
-                  controller.cancelTransaction(theTransaction.id!);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('İşlem iptal edildi'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
+
+      return ListView.separated(
+        itemCount: transactions.length,
+        separatorBuilder: (_, __) => const Divider(height: 1),
+        itemBuilder: (context, index) {
+          final tx = transactions[index];
+          final cat = tx.category;
+
+          final isIncome = cat?.type == 'gelir';
+          final isCanceled = tx.canceled == true;
+          final brightness = Theme.of(context).brightness;
+
+          return Dismissible(
+            key: ValueKey(tx.id),
+            direction: isCanceled
+                ? DismissDirection.startToEnd
+                : DismissDirection.horizontal,
+            background: Container(
+              color: Colors.blueGrey.withOpacity(0.1),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Icon(Icons.info_outline, color: Colors.blueGrey),
+            ),
+            secondaryBackground: Container(
+              color: Colors.red.withOpacity(0.1),
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Icon(Icons.delete, color: Colors.red),
+            ),
+            confirmDismiss: (direction) async {
+              if (direction == DismissDirection.startToEnd) {
+                _showCancelDetails(context, tx);
                 return false;
-              },
-              child: ListTile(
-                leading: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: theTransaction.canceled == true
-                        ? AppColors.inputBorder.withOpacity(0.1)
-                        : theTransaction.category?.type == 'gelir'
-                        ? (Theme.of(context).brightness == Brightness.light
-                              ? AppColors.success.withOpacity(0.1)
-                              : AppColors.success.withOpacity(0.25))
-                        : (Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.error.withOpacity(0.1)
-                              : AppColors.error.withOpacity(0.25)),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    theTransaction.canceled == true
-                        ? Icons.cancel
-                        : theTransaction.category?.type == 'gelir'
-                        ? Icons.arrow_upward
-                        : Icons.arrow_downward,
-                    size: 24,
-                    color: theTransaction.canceled == true
-                        ? AppColors.inputBorder
-                        : theTransaction.category?.type == 'gelir'
-                        ? AppColors.success
-                        : AppColors.error,
-                  ),
+              }
+              if (direction == DismissDirection.endToStart && !isCanceled) {
+                await controller.cancelTransaction(tx.id!);
+                // İşlemi iptal edince state güncellemesi yeterli
+                tx.canceled = true;
+                controller.allTransactions.refresh(); // anlık yenileme
+              }
+              return false; // asla silme
+            },
+            child: ListTile(
+              leading: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: isCanceled
+                      ? AppColors.inputBorder.withOpacity(0.1)
+                      : isIncome
+                      ? AppColors.success.withOpacity(
+                          brightness == Brightness.light ? 0.1 : 0.25,
+                        )
+                      : AppColors.error.withOpacity(
+                          brightness == Brightness.light ? 0.25 : 0.1,
+                        ),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text(
-                  category?.name ?? 'Açıklama yok',
-                  style: theTransaction.canceled == true
-                      ? const TextStyle(decoration: TextDecoration.lineThrough)
-                      : null,
-                ),
-                subtitle: Text(
-                  theTransaction.description ?? "Açıklama yok",
-                  style: theTransaction.canceled == true
-                      ? const TextStyle(decoration: TextDecoration.lineThrough)
-                      : null,
-                ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${theTransaction.category?.type == 'gelir' ? '+' : '-'}'
-                      '${NumberFormat.currency(symbol: '₺', decimalDigits: 2, locale: 'tr_TR').format(double.parse(theTransaction.amount?.toString() ?? '0'))}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: theTransaction.category?.type == 'gelir'
-                            ? (Theme.of(context).brightness == Brightness.light)
-                                  ? AppColors.success
-                                  : AppColors.success
-                            : (Theme.of(context).brightness == Brightness.dark)
-                            ? AppColors.error
-                            : AppColors.error,
-                      ),
-                    ),
-                    Text(
-                      DateFormat('dd MMMM y').format(theTransaction.date!),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? AppColors.inputBorder
-                            : AppColors.primary,
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  isCanceled
+                      ? Icons.cancel
+                      : isIncome
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                  size: 24,
+                  color: isCanceled
+                      ? AppColors.inputBorder
+                      : isIncome
+                      ? AppColors.success
+                      : AppColors.error,
                 ),
               ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider(height: 1);
-          },
-          itemCount: controller.allTransactions.length,
-        ),
+              title: Text(
+                cat?.name ?? 'Kategori yok',
+                style: isCanceled
+                    ? const TextStyle(decoration: TextDecoration.lineThrough)
+                    : null,
+              ),
+              subtitle: Text(
+                tx.description ?? "Açıklama yok",
+                style: isCanceled
+                    ? const TextStyle(decoration: TextDecoration.lineThrough)
+                    : null,
+              ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '${isIncome ? '+' : '-'}'
+                    '${NumberFormat.currency(symbol: '₺', decimalDigits: 2, locale: 'tr_TR').format(tx.amount ?? 0)}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: isIncome ? AppColors.success : AppColors.error,
+                    ),
+                  ),
+                  Text(
+                    DateFormat('dd MMMM y', 'tr_TR').format(tx.date!),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: brightness == Brightness.dark
+                          ? AppColors.inputBorder
+                          : AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       );
     });
   }

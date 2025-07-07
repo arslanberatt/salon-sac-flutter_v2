@@ -9,7 +9,8 @@ abstract class ApiConstants {
   // Auth
   static const String login = '/api/login';
   static const String register = '/api/register';
-  static const String forgetPassword = '/api/forget-password';
+  static const String forgotPassword = '/api/forget-password';
+  static const String verifyResetCode = '/api/reset-code-check';
   static const String resetPassword = '/api/reset-password';
 
   // User
@@ -37,13 +38,13 @@ abstract class ApiConstants {
   // // Appointments
   static const String appointments = '/api/appointments';
   static const String createAppointment = '/api/create-appointment';
-  static const String markAsDone = '/api/appointments/mark-as-done';
-  static const String cancelAppointment = '/api/appointments/cancel';
+  static const String markAsDone = '/api/mark-as-done';
+  static const String cancelAppointment = '/api/cancel';
+  static const String updateAppointments = '/api/update-appointment';
 
-  // // Salary
-  // static const String mySalaryRecords = '/my-salary-records';
-  // static const String allSalaryRecords = '/salary-records';
-  // static const String salaryAdd = '/salary-record';
+  // Salary
+  static const String mySalaryRecords = '/api/my-salary-records';
+  static const String allSalaryRecords = '/api/salary-records';
 
   // // Advance
   // static const String requestAdvance = '/advance-request';
@@ -117,7 +118,6 @@ class ApiServices extends GetxService {
       );
     } catch (e) {
       if (e is DioException) {
-        print('HATA STATUS: ${e.response?.statusCode}');
         print('HATA DATA: ${e.response?.data}');
       }
       rethrow;

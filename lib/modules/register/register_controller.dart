@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/core/base_controller.dart';
 import 'package:salon_sac_flutter_v2/services/auth_service.dart';
+import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 
 class RegisterController extends BaseController {
   late final AuthService _authService;
+
   final name = ''.obs;
   final lastname = ''.obs;
   final phone = ''.obs;
   final email = ''.obs;
   final password = ''.obs;
+  final confirmPassword = ''.obs;
+  final isPasswordVisible = false.obs;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -18,10 +22,16 @@ class RegisterController extends BaseController {
     _authService = Get.find<AuthService>();
   }
 
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
   Future<void> registerUser() async {
+    if (!formKey.currentState!.validate()) return;
+
     try {
-      if (!formKey.currentState!.validate()) return;
       setLoading(true);
+
       final user = await _authService.register(
         name: name.value,
         lastname: lastname.value,
@@ -29,25 +39,36 @@ class RegisterController extends BaseController {
         phone: phone.value,
         password: password.value,
       );
-      // Profil null olsa bile token kaydedildiyse başarılı say!
-      if (user != null || await _authService.isAuthenticated()) {
+
+      final isLogged = user != null || await _authService.isAuthenticated();
+
+      if (isLogged) {
         Get.snackbar(
           'Kayıt Başarılı',
-          'Kullanıcı kaydı oluşturuldu. Giriş yapabilirsiniz.',
+          'Hesabınız oluşturuldu. Giriş yapabilirsiniz.',
+          snackPosition: SnackPosition.BOTTOM,
         );
         await Future.delayed(const Duration(seconds: 1));
-        Get.offAllNamed("/login");
+        Get.offAllNamed(AppRoutes.LOGIN);
       } else {
         Get.snackbar(
           'Kayıt Başarısız',
-          'Kullanıcı kaydı oluşturulamadı. Lütfen bilgilerinizi kontrol edin.',
+          'Bir sorun oluştu, tekrar deneyin.',
+          snackPosition: SnackPosition.BOTTOM,
         );
       }
     } catch (e) {
-      print('Register Error: $e');
-      Get.snackbar('Kayıt Başarısız', 'Bir hata oluştu: $e');
+      Get.snackbar(
+        'Hata',
+        'Kayıt sırasında bir hata oluştu: $e',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } finally {
       setLoading(false);
     }
+  }
+
+  void goToLogin() {
+    Get.offAllNamed(AppRoutes.LOGIN);
   }
 }
