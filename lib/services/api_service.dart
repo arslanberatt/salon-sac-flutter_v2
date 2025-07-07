@@ -9,7 +9,8 @@ abstract class ApiConstants {
   // Auth
   static const String login = '/api/login';
   static const String register = '/api/register';
-  static const String forgetPassword = '/api/forget-password';
+  static const String forgotPassword = '/api/forget-password';
+  static const String verifyResetCode = '/api/reset-code-check';
   static const String resetPassword = '/api/reset-password';
 
   // User
@@ -41,10 +42,9 @@ abstract class ApiConstants {
   static const String cancelAppointment = '/api/cancel';
   static const String updateAppointments = '/api/update-appointment';
 
-  // // Salary
-  // static const String mySalaryRecords = '/my-salary-records';
-  // static const String allSalaryRecords = '/salary-records';
-  // static const String salaryAdd = '/salary-record';
+  // Salary
+  static const String mySalaryRecords = '/api/my-salary-records';
+  static const String allSalaryRecords = '/api/salary-records';
 
   // // Advance
   // static const String requestAdvance = '/advance-request';

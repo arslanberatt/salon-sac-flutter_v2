@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class StorageKeys {
   static const String userToken = "user_token";
   static const String themeMode = "theme_mode";
+  static const String temporaryToken = "temporary_token";
 }
 
 class StorageService extends GetxController {

@@ -47,7 +47,6 @@ class PersonalInfoCard extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     final user = controller.user.value!;
 
-    // Oluşan tarihi Türkçe formatla
     final createdAt = user.createdAt != null
         ? DateFormat('dd MMM yyyy', 'tr_TR').format(user.createdAt!)
         : '-';

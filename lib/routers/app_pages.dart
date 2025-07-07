@@ -18,6 +18,9 @@ import 'package:salon_sac_flutter_v2/modules/profile/profile_page.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/update_profile_page.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_bindings.dart';
 import 'package:salon_sac_flutter_v2/modules/register/register_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/forgot_password_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/reset_code_page.dart';
+import 'package:salon_sac_flutter_v2/modules/reset_password/reset_password_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/update_service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
@@ -51,6 +54,9 @@ abstract class AppRoutes {
   static const APPOINTMENTDETAIL = '/appointment-detail';
   static const UPDATEAPPOINTMENT = '/appointment-appointment';
   static const EMPLOYEEHISTORY = '/employe-history';
+  static const RESETPASSWORD = '/reset-password';
+  static const RESETCODE = '/reset-code';
+  static const FORGOTPASSWORD = '/forgot-password';
 }
 
 class AppPages {
@@ -109,5 +115,8 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.EMPLOYEELIST, page: () => EmployeeListPage()),
     GetPage(name: AppRoutes.EMPLOYEEHISTORY, page: () => EmployeeHistoryPage()),
+    GetPage(name: AppRoutes.FORGOTPASSWORD, page: () => ForgotPasswordPage()),
+    GetPage(name: AppRoutes.RESETPASSWORD, page: () => ResetPasswordPage()),
+    GetPage(name: AppRoutes.RESETCODE, page: () => ResetCodePage()),
   ];
 }

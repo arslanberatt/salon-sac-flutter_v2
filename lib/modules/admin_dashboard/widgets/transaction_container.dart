@@ -21,7 +21,7 @@ class TransactionContainer extends GetView<TransactionDashboardController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Hesap Tutarı",
+                  "Kasa",
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 const SizedBox(height: 12),

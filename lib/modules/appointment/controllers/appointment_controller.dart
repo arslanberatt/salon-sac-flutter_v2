@@ -4,6 +4,7 @@ import 'package:salon_sac_flutter_v2/core/base_controller.dart';
 import 'package:salon_sac_flutter_v2/models/app_appointment.dart';
 import 'package:salon_sac_flutter_v2/models/app_service.dart';
 import 'package:salon_sac_flutter_v2/models/app_user.dart';
+import 'package:salon_sac_flutter_v2/modules/transaction_dashboard/transaction_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/repositories/appointment_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/service_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/user_repository.dart';
@@ -106,7 +107,7 @@ class AppointmentController extends BaseController {
   }
 
   void clearForm() {
-    selectedEmployee.value;
+    selectedEmployee.value = null;
     customerName.value = '';
     customerPhone.value = '';
     selectedServices.clear();
@@ -135,9 +136,9 @@ class AppointmentController extends BaseController {
       );
       await _appointmentRepository.createAppointment(appt);
       await loadInitialData();
-      Get.back();
-      showSuccessSnackbar(message: 'Randevu oluşturuldu');
       clearForm();
+      await loadInitialData();
+      Get.back();
     } catch (e) {
       showErrorSnackbar(message: e.toString());
     } finally {
@@ -150,8 +151,9 @@ class AppointmentController extends BaseController {
     try {
       await _appointmentRepository.markAsDone(id);
       await loadInitialData();
-      Get.back(result: true);
-      showSuccessSnackbar(message: 'Randevu tamamlandı');
+      Get.find<TransactionDashboardController>().refreshDashboard();
+      Get.back();
+      showSuccessSnackbar(message: 'Randevu onaylandı');
     } catch (e) {
       showErrorSnackbar(message: 'Tamamlama başarısız');
     } finally {

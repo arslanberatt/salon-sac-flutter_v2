@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/repositories/appointment_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/category_repository.dart';
+import 'package:salon_sac_flutter_v2/repositories/salary_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/service_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/transaction_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/user_repository.dart';
@@ -16,7 +17,7 @@ class AppBinding implements Bindings {
       final service = StorageService();
       await service.init();
       return service;
-    });
+    }, permanent: true);
 
     Get.put(ThemeService());
 
@@ -37,5 +38,6 @@ class AppBinding implements Bindings {
     Get.put(UserRepository());
     Get.put(ServiceRepository());
     Get.put(AppointmentRepository());
+    Get.put(SalaryRepository());
   }
 }
