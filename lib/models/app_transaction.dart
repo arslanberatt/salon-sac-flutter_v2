@@ -13,6 +13,7 @@ class AppTransaction {
   final String? userId;
   final Category? category;
   final String? createdBy;
+  final CreatedByRef? createdByUser;
   bool? canceled;
   final DateTime? canceledAt;
   final String? canceledBy;
@@ -28,6 +29,7 @@ class AppTransaction {
     this.userId,
     this.category,
     this.createdBy,
+    this.createdByUser,
     this.canceled,
     this.canceledAt,
     this.canceledBy,
@@ -36,31 +38,35 @@ class AppTransaction {
     this.type,
   });
 
-  factory AppTransaction.fromJson(Map<String, dynamic> json) => AppTransaction(
-    id: json["_id"] as String?,
-    amount: (json["amount"] as num?)?.toDouble(),
-    description: json["description"] as String?,
-    date: json["date"] != null ? DateTime.parse(json["date"] as String) : null,
-    createdBy: json["createdBy"] is Map
-        ? json["createdBy"]["_id"] as String?
-        : json["createdBy"] as String?,
-    userId: json["user_id"] as String?,
-    category: json["category"] is Map<String, dynamic>
-        ? Category.fromJson(json["category"] as Map<String, dynamic>)
-        : Category(id: json["category"] as String?), // ← düzeltme burada!
-    canceled: json["canceled"] as bool?,
-    canceledAt: json["canceledAt"] != null
-        ? DateTime.parse(json["canceledAt"] as String)
-        : null,
-    canceledBy: json["canceledBy"] as String?,
-    createdAt: json["createdAt"] != null
-        ? DateTime.parse(json["createdAt"] as String)
-        : null,
-    updatedAt: json["updatedAt"] != null
-        ? DateTime.parse(json["updatedAt"] as String)
-        : null,
-    type: json["type"] as String?,
-  );
+  factory AppTransaction.fromJson(Map<String, dynamic> json) {
+    final created = json["createdBy"];
+    return AppTransaction(
+      id: json["_id"] as String?,
+      amount: (json["amount"] as num?)?.toDouble(),
+      description: json["description"] as String?,
+      date: json["date"] != null ? DateTime.parse(json["date"]) : null,
+      createdBy: created is String ? created : created["_id"],
+      createdByUser: created is Map<String, dynamic>
+          ? CreatedByRef.fromJson(created)
+          : null,
+      userId: json["user_id"] as String?,
+      category: json["category"] is Map<String, dynamic>
+          ? Category.fromJson(json["category"])
+          : Category(id: json["category"]),
+      canceled: json["canceled"] as bool?,
+      canceledAt: json["canceledAt"] != null
+          ? DateTime.parse(json["canceledAt"])
+          : null,
+      canceledBy: json["canceledBy"] as String?,
+      createdAt: json["createdAt"] != null
+          ? DateTime.parse(json["createdAt"])
+          : null,
+      updatedAt: json["updatedAt"] != null
+          ? DateTime.parse(json["updatedAt"])
+          : null,
+      type: json["type"] as String?,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     String? isoDate;
@@ -103,4 +109,20 @@ class Category {
       Category(id: json["_id"], name: json["name"], type: json["type"]);
 
   Map<String, dynamic> toJson() => {"_id": id, "name": name, "type": type};
+}
+
+class CreatedByRef {
+  final String? id;
+  final String? name;
+  final String? lastname;
+  final int? commissionRate;
+
+  CreatedByRef({this.id, this.name, this.lastname, this.commissionRate});
+
+  factory CreatedByRef.fromJson(Map<String, dynamic> json) => CreatedByRef(
+    id: json["_id"],
+    name: json["name"],
+    lastname: json["lastname"],
+    commissionRate: json["commissionRate"],
+  );
 }

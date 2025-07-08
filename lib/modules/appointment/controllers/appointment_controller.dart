@@ -32,7 +32,10 @@ class AppointmentController extends BaseController {
   final filteredAppointments = <AppAppointment>[].obs;
 
   // Filters
-  final selectedDate = DateTime.now().obs;
+  final selectedDate = DateTime.now().isBefore(DateTime.now())
+      ? DateTime.now().obs
+      : DateTime.now().obs;
+
   final selectedEmployee = Rxn<AppUser>();
   final selectedServices = <AppService>[].obs;
 

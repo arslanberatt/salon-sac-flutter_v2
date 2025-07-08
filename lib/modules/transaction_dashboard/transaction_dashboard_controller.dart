@@ -57,8 +57,7 @@ class TransactionDashboardController extends BaseController {
     final now = DateTime.now();
 
     for (final tr in allTransactions) {
-      if (tr.date == null || tr.canceled == true)
-        continue; // ⬅️ iptal edilenleri atla
+      if (tr.date == null || tr.canceled == true) continue;
 
       if (tr.date!.year == now.year && tr.date!.month == now.month) {
         if (tr.category?.type == 'gelir') {
@@ -79,10 +78,10 @@ class TransactionDashboardController extends BaseController {
       if (result != null) {
         final index = allTransactions.indexWhere((t) => t.id == transactionId);
         if (index != -1) {
-          allTransactions[index] = result; // güncel transaction bilgisi
+          allTransactions[index] = result;
           allTransactions.refresh();
           calculateMonthlyTransactions();
-          calculateTotalAmount(); // yeniden hesapla
+          calculateTotalAmount();
           showSuccessSnackbar(message: 'İşlem iptal edildi!');
         }
       } else {
