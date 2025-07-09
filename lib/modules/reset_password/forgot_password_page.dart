@@ -9,12 +9,18 @@ class ForgotPasswordPage extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Şifremi Unuttum')),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: controller.emailFormKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 24),
               TextFormField(

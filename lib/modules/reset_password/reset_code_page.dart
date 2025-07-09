@@ -8,12 +8,18 @@ class ResetCodePage extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Kod Doğrulama")),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: controller.codeFormKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
                 "E-postana gelen 6 haneli kodu gir:",

@@ -18,10 +18,14 @@ class EmployeeListPage extends GetView<EmployeeListController> {
             'Salon Saç',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          bottom: const TabBar(
-            labelColor: AppColors.primary,
+          bottom: TabBar(
+            labelColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
             unselectedLabelColor: Colors.grey,
-            indicatorColor: AppColors.primary,
+            indicatorColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
             tabs: [
               Tab(text: 'Aktif'),
               Tab(text: 'Pasif'),

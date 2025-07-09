@@ -20,4 +20,14 @@ class SalaryRepository extends GetxService {
     }
     throw Exception("Maaşlar getirilirken bir hata oluştu!");
   }
+
+  Future<List<AppSalary>> getMySalaries() async {
+    final response = await _apiServices.get(ApiConstants.mySalaryRecords);
+
+    if (response.statusCode == 200) {
+      final list = response.data['data'] as List;
+      return list.map((e) => AppSalary.fromJson(e)).toList();
+    }
+    throw Exception("Maaşlar getirilirken bir hata oluştu!");
+  }
 }

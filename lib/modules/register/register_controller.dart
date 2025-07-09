@@ -43,26 +43,16 @@ class RegisterController extends BaseController {
       final isLogged = user != null || await _authService.isAuthenticated();
 
       if (isLogged) {
-        Get.snackbar(
-          'Kayıt Başarılı',
-          'Hesabınız oluşturuldu. Giriş yapabilirsiniz.',
-          snackPosition: SnackPosition.BOTTOM,
+        showSuccessSnackbar(
+          message: 'Hesabınız oluşturuldu. Giriş yapabilirsiniz.',
         );
         await Future.delayed(const Duration(seconds: 1));
         Get.offAllNamed(AppRoutes.LOGIN);
       } else {
-        Get.snackbar(
-          'Kayıt Başarısız',
-          'Bir sorun oluştu, tekrar deneyin.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        showErrorSnackbar(message: 'Bir sorun oluştu, tekrar deneyin.');
       }
     } catch (e) {
-      Get.snackbar(
-        'Hata',
-        'Kayıt sırasında bir hata oluştu: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      showErrorSnackbar(message: 'Kayıt sırasında bir hata oluştu: $e');
     } finally {
       setLoading(false);
     }

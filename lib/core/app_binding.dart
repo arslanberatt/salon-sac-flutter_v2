@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/repositories/advance_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/appointment_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/category_repository.dart';
 import 'package:salon_sac_flutter_v2/repositories/salary_repository.dart';
@@ -39,5 +40,6 @@ class AppBinding implements Bindings {
     Get.put(ServiceRepository());
     Get.put(AppointmentRepository());
     Get.put(SalaryRepository());
+    Get.put(AdvanceRepository());
   }
 }

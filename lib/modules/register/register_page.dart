@@ -11,9 +11,10 @@ class RegisterPage extends GetView<RegisterController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kayıt Ol'),
-        centerTitle: true,
-        leading: const BackButton(),
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),

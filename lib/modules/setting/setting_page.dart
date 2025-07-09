@@ -2,22 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/custom_appbar.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/section_title.dart';
+import 'package:salon_sac_flutter_v2/modules/employee_dashboard/employee_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/profile_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/profile_item.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/setting_item.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/theme_item.dart';
 import 'package:salon_sac_flutter_v2/services/api_service.dart';
+import 'package:salon_sac_flutter_v2/services/auth_service.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class SettingPage extends GetView<SettingController> {
-  const SettingPage({super.key});
+  SettingPage({super.key});
+  final user = Get.find<AuthService>().currentUser.value;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: (user != null && user?.isAdmin == true)
+          ? const CustomAppBar()
+          : AppBar(
+              title: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingS),
+                child: Text(
+                  'Salon Saç',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+              centerTitle: false,
+              actionsPadding: EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingS,
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => Get.find<EmployeeDashboardController>()
+                      .goToSalaryRecords(),
+                  icon: const Icon(Icons.notifications_none_rounded),
+                ),
+              ],
+            ),
       body: Obx(
         () => ListView(
           padding: const EdgeInsets.all(AppSizes.paddingM),

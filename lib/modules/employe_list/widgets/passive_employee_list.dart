@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/modules/employe_list/employee_list_controller.dart';
 import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
+import 'package:salon_sac_flutter_v2/services/api_service.dart';
+import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 
 class PassiveEmployeeList extends GetView<EmployeeListController> {
   const PassiveEmployeeList({super.key});
@@ -52,12 +54,19 @@ class PassiveEmployeeList extends GetView<EmployeeListController> {
                 leading: CircleAvatar(
                   radius: 24,
                   backgroundColor: Colors.grey[300],
-                  backgroundImage: employee.avatar != null
-                      ? NetworkImage(employee.avatar!)
-                      : null,
-                  child: employee.avatar == null
-                      ? Icon(Icons.person, size: 12, color: Colors.white)
-                      : null,
+                  child: ClipOval(
+                    child: Image.network(
+                      '${ApiConstants.baseUrl}${employee.avatar}',
+                      width: 140,
+                      height: 140,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Icon(
+                        Icons.person,
+                        size: 64,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
                 ),
                 title: Text(
                   '${employee.name ?? ''} ${employee.lastname ?? ''}',

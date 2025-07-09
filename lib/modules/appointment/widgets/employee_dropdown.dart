@@ -6,7 +6,7 @@ import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 
 class EmployeeDropdown extends GetView<AppointmentController> {
-  const EmployeeDropdown({Key? key}) : super(key: key);
+  const EmployeeDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,11 @@ class EmployeeDropdown extends GetView<AppointmentController> {
             )
             .toList(),
         menuStyle: MenuStyle(
-          backgroundColor: WidgetStatePropertyAll(AppColors.textWhite),
+          backgroundColor: WidgetStatePropertyAll(
+            Theme.of(context).brightness == Brightness.dark
+                ? AppColors.darkCard
+                : AppColors.textWhite,
+          ),
           elevation: WidgetStatePropertyAll(8),
           shadowColor: WidgetStatePropertyAll(Colors.black26),
           padding: WidgetStatePropertyAll(
@@ -35,7 +39,12 @@ class EmployeeDropdown extends GetView<AppointmentController> {
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSizes.borderRadiusS),
-              side: BorderSide(color: AppColors.inputBorder, width: 1.5),
+              side: BorderSide(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.darkCard
+                    : AppColors.lightCard,
+                width: 1.5,
+              ),
             ),
           ),
         ),

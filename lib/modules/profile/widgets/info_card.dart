@@ -8,12 +8,22 @@ import 'package:salon_sac_flutter_v2/utils/constants/app_sizes.dart';
 class PersonalInfoCard extends GetView<ProfileController> {
   const PersonalInfoCard({super.key});
 
-  Widget _infoRow(IconData icon, String label, String value) {
+  Widget _infoRow(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingXS),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: AppColors.primaryDark),
+          Icon(
+            icon,
+            size: 20,
+            color: isDark ? AppColors.inputBorder : AppColors.primary,
+          ),
           const SizedBox(width: AppSizes.paddingS),
           Expanded(
             child: Column(
@@ -21,7 +31,7 @@ class PersonalInfoCard extends GetView<ProfileController> {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
@@ -29,10 +39,12 @@ class PersonalInfoCard extends GetView<ProfileController> {
                 const SizedBox(height: 2),
                 Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: isDark
+                        ? AppColors.inputBorder
+                        : AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -50,18 +62,18 @@ class PersonalInfoCard extends GetView<ProfileController> {
     final createdAt = user.createdAt != null
         ? DateFormat('dd MMM yyyy', 'tr_TR').format(user.createdAt!)
         : '-';
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.all(AppSizes.paddingM),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Hesap Bilgileri",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: isDark ? AppColors.inputBorder : AppColors.textPrimary,
             ),
           ),
           const Divider(height: AppSizes.paddingM * 2),
@@ -73,16 +85,24 @@ class PersonalInfoCard extends GetView<ProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _infoRow(
+                      context,
                       Icons.person_outline,
                       "Adı Soyadı",
                       '${user.name!} ${user.lastname!}',
                     ),
                     _infoRow(
+                      context,
+
                       Icons.calendar_today_outlined,
                       "Kayıt Tarihi",
                       createdAt,
                     ),
-                    _infoRow(Icons.email_outlined, "Email Adresi", user.email!),
+                    _infoRow(
+                      context,
+                      Icons.email_outlined,
+                      "Email Adresi",
+                      user.email!,
+                    ),
                   ],
                 ),
               ),
@@ -92,16 +112,19 @@ class PersonalInfoCard extends GetView<ProfileController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _infoRow(
+                      context,
                       Icons.verified_user_outlined,
                       "Rol",
                       user.isAdmin! ? "Admin" : "Çalışan",
                     ),
                     _infoRow(
+                      context,
                       Icons.work_outline,
                       "Prim Oranı",
                       "${user.commissionRate}%",
                     ),
                     _infoRow(
+                      context,
                       Icons.phone_outlined,
                       "Telefon Numarası",
                       user.phone!,

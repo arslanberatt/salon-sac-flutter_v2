@@ -47,7 +47,6 @@ class AdminDashboardPage extends GetView<AdminDashboardController> {
                   child: _categoryCard(
                     context,
                     Icon(Icons.cut_outlined),
-
                     "Hizmetler",
                     controller.goToService,
                   ),

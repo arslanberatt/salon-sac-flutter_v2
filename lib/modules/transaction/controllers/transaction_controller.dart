@@ -21,9 +21,9 @@ class TransactionController extends BaseController {
   final formKey = GlobalKey<FormState>();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    loadCategories();
+    await loadCategories();
     ever(transactionType, (callback) {
       getFirstCategory();
     });

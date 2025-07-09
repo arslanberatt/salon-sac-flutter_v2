@@ -9,31 +9,37 @@ class ServiceSelector extends GetView<AppointmentController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.services.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (_, i) {
-          final AppService s = controller.services[i];
-          return Obx(
-            () => ChoiceChip(
-              label: Text(s.name ?? ''),
-              selected: controller.selectedServices.contains(s),
-              showCheckmark: true,
-              checkmarkColor: Colors.white,
-              backgroundColor: AppColors.lightCard,
-              selectedColor: AppColors.primaryDark,
-              labelStyle: TextStyle(
-                color: controller.selectedServices.contains(s)
-                    ? Colors.white
-                    : null,
+    return Obx(
+      () => SizedBox(
+        height: 40,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.services.length,
+          separatorBuilder: (_, __) => const SizedBox(width: 8),
+          itemBuilder: (_, i) {
+            final AppService s = controller.services[i];
+            return Obx(
+              () => ChoiceChip(
+                label: Text(s.name ?? ''),
+                selected: controller.selectedServices.contains(s),
+                showCheckmark: true,
+                checkmarkColor: Colors.white,
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.darkCard
+                    : AppColors.lightCard,
+                selectedColor: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.primaryLight
+                    : AppColors.primary,
+                labelStyle: TextStyle(
+                  color: controller.selectedServices.contains(s)
+                      ? AppColors.inputBorder
+                      : AppColors.textSecondary,
+                ),
+                onSelected: (_) => controller.toggleService(s),
               ),
-              onSelected: (_) => controller.toggleService(s),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

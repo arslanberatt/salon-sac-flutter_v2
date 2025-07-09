@@ -13,39 +13,47 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
   @override
   Widget build(BuildContext context) {
     final user = controller.employee;
+    final isAdminUser = user.isAdmin == true;
 
     return DefaultTabController(
-      length: 3,
+      length: isAdminUser ? 2 : 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
             'Salon Saç',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
+            labelColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
+            unselectedLabelColor: Colors.grey,
+            indicatorColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
             tabs: [
-              Tab(text: 'Bilgiler'),
-              Tab(text: 'Randevular'),
-              Tab(text: 'Gelirler'),
+              const Tab(text: 'Bilgiler'),
+              const Tab(text: 'Randevular'),
+              if (!isAdminUser) const Tab(text: 'İşlemler'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            _buildInfoTab(user),
+            _buildInfoTab(context, user),
             _buildAppointmentsTab(),
-            _buildSalaryTab(),
+            if (!isAdminUser) _buildSalaryTab(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoTab(AppUser user) {
+  Widget _buildInfoTab(BuildContext context, AppUser user) {
     return ListView(
       padding: const EdgeInsets.all(AppSizes.paddingM),
       children: [
-        SizedBox(height: AppSizes.paddingM),
+        const SizedBox(height: AppSizes.paddingM),
         Center(
           child: CircleAvatar(
             radius: 64,
@@ -65,8 +73,15 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
             ),
           ),
         ),
-        SizedBox(height: AppSizes.spacingXL),
-        Divider(height: AppSizes.spacingM * 2),
+        const SizedBox(height: AppSizes.spacingXL),
+        _infoRow(
+          context,
+          Icons.fingerprint,
+          "Kullanıcı ID",
+          user.id ?? '-',
+          12,
+        ),
+        const Divider(height: AppSizes.spacingM * 2),
         Center(
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.paddingM),
@@ -77,19 +92,25 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _infoRow(
+                        context,
                         Icons.person_outline,
                         "Adı Soyadı",
                         '${user.name!} ${user.lastname!}',
+                        14,
                       ),
                       _infoRow(
+                        context,
                         Icons.attach_money,
                         "Maaş",
                         '${user.salary ?? 0} ₺',
+                        14,
                       ),
                       _infoRow(
+                        context,
                         Icons.email_outlined,
                         "Email Adresi",
                         user.email!,
+                        11,
                       ),
                     ],
                   ),
@@ -100,19 +121,25 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _infoRow(
+                        context,
                         Icons.verified_user_outlined,
                         "Rol",
                         user.isAdmin! ? "Admin" : "Çalışan",
+                        14,
                       ),
                       _infoRow(
+                        context,
                         Icons.work_outline,
                         "Prim Oranı",
                         "${user.commissionRate}%",
+                        14,
                       ),
                       _infoRow(
+                        context,
                         Icons.phone_outlined,
                         "Telefon Numarası",
                         user.phone!,
+                        14,
                       ),
                     ],
                   ),
@@ -121,6 +148,55 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
             ),
           ),
         ),
+        if (!user.isAdmin!)
+          Obx(
+            () => Container(
+              padding: const EdgeInsets.all(AppSizes.paddingM),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Bu Ayki Maaş Detayı',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryLight,
+                    ),
+                  ),
+                  const SizedBox(height: AppSizes.paddingM),
+                  _infoRow(
+                    context,
+                    Icons.work_outline,
+                    'Sabit Maaş',
+                    '${user.salary ?? 0} ₺',
+                    14,
+                  ),
+                  _infoRow(
+                    context,
+                    Icons.percent,
+                    'Bu Ay ki Prim',
+                    '${controller.totalBonus.toStringAsFixed(0)} ₺',
+                    14,
+                  ),
+                  _infoRow(
+                    context,
+                    Icons.money_off,
+                    'Bu Ay ki Avans',
+                    '${controller.totalAdvance.toStringAsFixed(0)} ₺',
+                    14,
+                  ),
+                  const Divider(),
+                  _infoRow(
+                    context,
+                    Icons.monetization_on,
+                    'Net Ödenecek Maaş',
+                    '${controller.monthlyNetSalary.toStringAsFixed(0)} ₺',
+                    16,
+                  ),
+                ],
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -147,7 +223,7 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
             isThreeLine: true,
             trailing: Text(
               '${appt.price?.toStringAsFixed(0) ?? "0"} ₺',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           );
         },
@@ -175,7 +251,6 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
               : r.type == 'avans'
               ? 'Avans'
               : 'Gelir';
-
           return ListTile(
             leading: Icon(
               r.type == 'prim'
@@ -192,21 +267,26 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
       );
     });
   }
-
-  String getRole(AppUser user) {
-    if (user.isAdmin == true) return 'Patron';
-    if (user.isMod == true) return 'Moderatör';
-    if (user.isActive == true) return 'Çalışan';
-    return 'Bu kullanıcının henüz bir rolü yok';
-  }
 }
 
-Widget _infoRow(IconData icon, String label, String value) {
+Widget _infoRow(
+  BuildContext context,
+  IconData icon,
+  String label,
+  String value,
+  double font,
+) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingXS),
     child: Row(
       children: [
-        Icon(icon, size: 20, color: AppColors.primaryDark),
+        Icon(
+          icon,
+          size: 20,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.lightCard
+              : AppColors.darkCard,
+        ),
         const SizedBox(width: AppSizes.paddingS),
         Expanded(
           child: Column(
@@ -215,17 +295,19 @@ Widget _infoRow(IconData icon, String label, String value) {
               Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   color: AppColors.textSecondary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 14,
+                style: TextStyle(
+                  fontSize: font,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.lightCard
+                      : AppColors.darkCard,
                 ),
               ),
             ],

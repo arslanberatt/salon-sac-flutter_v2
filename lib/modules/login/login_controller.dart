@@ -31,17 +31,18 @@ class LoginController extends BaseController {
         password: password.value,
       );
       if (user != null) {
-        // Opsiyonel: "rememberMe" burada kullanılabilir (local storage vs)
         if (user.isAdmin == true) {
           Get.offAllNamed(AppRoutes.ADMIN);
         } else {
           Get.offAllNamed(AppRoutes.EMPLOYEE);
         }
       } else {
-        Get.snackbar('Hata', 'Giriş başarısız. Lütfen bilgileri kontrol edin.');
+        showErrorSnackbar(
+          message: 'Giriş başarısız. Lütfen bilgileri kontrol edin.',
+        );
       }
     } catch (e) {
-      Get.snackbar('Hata', 'Giriş sırasında bir hata oluştu.');
+      showErrorSnackbar(message: 'Giriş sırasında bir hata oluştu.');
     } finally {
       setLoading(false);
     }
@@ -52,6 +53,6 @@ class LoginController extends BaseController {
   }
 
   void forgotPassword() {
-    Get.offAllNamed(AppRoutes.FORGOTPASSWORD);
+    Get.toNamed(AppRoutes.FORGOTPASSWORD);
   }
 }

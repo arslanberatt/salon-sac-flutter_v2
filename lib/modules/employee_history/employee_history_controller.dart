@@ -31,7 +31,8 @@ class EmployeeHistoryController extends BaseController {
         return a.employee?.id == employee.id &&
             a.startTime != null &&
             a.startTime!.year == selectedMonth.year &&
-            a.startTime!.month == selectedMonth.month;
+            a.startTime!.month == selectedMonth.month &&
+            a.isCancelled != true;
       }).toList();
     } catch (e) {
       showErrorSnackbar(message: e.toString());
@@ -53,4 +54,15 @@ class EmployeeHistoryController extends BaseController {
       showErrorSnackbar(message: 'Gelirler yüklenemedi');
     }
   }
+
+  double get totalBonus => salaryRecords
+      .where((e) => e.type == 'prim')
+      .fold(0.0, (sum, r) => sum + (r.amount ?? 0));
+
+  double get totalAdvance => salaryRecords
+      .where((e) => e.type == 'avans')
+      .fold(0.0, (sum, r) => sum + (r.amount ?? 0));
+
+  double get monthlyNetSalary =>
+      (employee.salary ?? 0) + totalBonus - totalAdvance;
 }

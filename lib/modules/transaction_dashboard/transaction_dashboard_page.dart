@@ -28,6 +28,18 @@ class TransactionDashboardPage extends GetView<TransactionDashboardController> {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 children: [
                   SummaryCard(
+                    title: 'Aylık Bakiye',
+                    amount:
+                        controller.montlyIncome.value -
+                        controller.montlyExpense.value,
+                    icon: Icons.account_balance_wallet,
+                    color: AppColors.textWhite,
+                    gradientColors: [
+                      AppColors.primary.withOpacity(0.5),
+                      AppColors.primary.withOpacity(0.7),
+                    ],
+                  ),
+                  SummaryCard(
                     title: 'Aylık Gelir',
                     amount: controller.montlyIncome.value,
                     icon: Icons.arrow_upward,
@@ -45,18 +57,6 @@ class TransactionDashboardPage extends GetView<TransactionDashboardController> {
                     gradientColors: [
                       AppColors.error.withOpacity(0.5),
                       AppColors.error.withOpacity(0.7),
-                    ],
-                  ),
-                  SummaryCard(
-                    title: 'Aylık Bakiye',
-                    amount:
-                        controller.montlyIncome.value -
-                        controller.montlyExpense.value,
-                    icon: Icons.account_balance_wallet,
-                    color: AppColors.textWhite,
-                    gradientColors: [
-                      AppColors.accent.withOpacity(0.5),
-                      AppColors.accent.withOpacity(0.7),
                     ],
                   ),
                 ],
