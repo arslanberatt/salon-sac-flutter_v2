@@ -23,6 +23,7 @@ import 'package:salon_sac_flutter_v2/modules/register/register_page.dart';
 import 'package:salon_sac_flutter_v2/modules/reset_password/forgot_password_page.dart';
 import 'package:salon_sac_flutter_v2/modules/reset_password/reset_code_page.dart';
 import 'package:salon_sac_flutter_v2/modules/reset_password/reset_password_page.dart';
+import 'package:salon_sac_flutter_v2/modules/salary/salary_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/service/update_service_page.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_page.dart';
@@ -61,6 +62,7 @@ abstract class AppRoutes {
   static const FORGOTPASSWORD = '/forgot-password';
   static const ADVANCE = '/advance';
   static const ADVANCEREQUEST = '/advance-request';
+  static const SALARY = '/salary';
 }
 
 class AppPages {
@@ -124,5 +126,6 @@ class AppPages {
     GetPage(name: AppRoutes.RESETCODE, page: () => ResetCodePage()),
     GetPage(name: AppRoutes.ADVANCE, page: () => AdvancePage()),
     GetPage(name: AppRoutes.ADVANCEREQUEST, page: () => AdvanceRequestPage()),
+    GetPage(name: AppRoutes.SALARY, page: () => SalaryPage()),
   ];
 }

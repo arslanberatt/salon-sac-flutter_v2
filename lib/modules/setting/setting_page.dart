@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/custom_appbar.dart';
 import 'package:salon_sac_flutter_v2/modules/common_widgets/section_title.dart';
+import 'package:salon_sac_flutter_v2/modules/employee_dashboard/employee_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/profile/profile_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/setting_controller.dart';
 import 'package:salon_sac_flutter_v2/modules/setting/widgets/profile_item.dart';
@@ -22,10 +23,24 @@ class SettingPage extends GetView<SettingController> {
       appBar: (user != null && user?.isAdmin == true)
           ? const CustomAppBar()
           : AppBar(
-              title: Text(
-                'Salon Saç',
-                style: Theme.of(context).textTheme.headlineSmall,
+              title: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingS),
+                child: Text(
+                  'Salon Saç',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ),
+              centerTitle: false,
+              actionsPadding: EdgeInsets.symmetric(
+                horizontal: AppSizes.paddingS,
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => Get.find<EmployeeDashboardController>()
+                      .goToSalaryRecords(),
+                  icon: const Icon(Icons.notifications_none_rounded),
+                ),
+              ],
             ),
       body: Obx(
         () => ListView(

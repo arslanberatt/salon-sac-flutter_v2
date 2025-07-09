@@ -71,80 +71,91 @@ class CalendarPage extends GetView<AppointmentController> {
           }),
           const SizedBox(height: 12),
           Expanded(
-            child: Obx(() {
-              final list = controller.filteredAppointments;
-              if (list.isEmpty) {
-                return const Center(
-                  child: Text('Seçilen gün için randevu yok'),
-                );
-              }
-              return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  final appt = list[index];
-                  return Dismissible(
-                    direction: (appt.isDone == true || appt.isCancelled == true)
-                        ? DismissDirection.startToEnd
-                        : DismissDirection.horizontal,
-                    key: ValueKey(appt.id),
-                    background: Container(
-                      color: Theme.of(context).primaryColor.withOpacity(0.2),
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: const Icon(
-                        Icons.info_outline,
-                        color: Colors.white,
+            child: RefreshIndicator(
+              color: AppColors.primaryDark,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              displacement: 40,
+              onRefresh: controller.refreshAppointments,
+              child: Obx(() {
+                final list = controller.filteredAppointments;
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: list.isEmpty ? 1 : list.length,
+                  itemBuilder: (context, index) {
+                    if (list.isEmpty) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 32),
+                        child: Center(
+                          child: Text('Seçilen gün için randevu yok'),
+                        ),
+                      );
+                    }
+
+                    final appt = list[index];
+                    return Dismissible(
+                      direction:
+                          (appt.isDone == true || appt.isCancelled == true)
+                          ? DismissDirection.startToEnd
+                          : DismissDirection.horizontal,
+                      key: ValueKey(appt.id),
+                      background: Container(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: const Icon(
+                          Icons.info_outline,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    secondaryBackground: Container(
-                      color: AppColors.success.withOpacity(0.2),
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: const Icon(
-                        Icons.check_circle_outline,
-                        color: Colors.white,
+                      secondaryBackground: Container(
+                        color: AppColors.success.withOpacity(0.2),
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: const Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    confirmDismiss: (direction) async {
-                      if (direction == DismissDirection.startToEnd) {
-                        Get.toNamed(
-                          AppRoutes.APPOINTMENTDETAIL,
-                          arguments: appt,
-                        );
-                        return false;
-                      } else if (direction == DismissDirection.endToStart) {
-                        final confirm = await showDialog<bool>(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: const Text('Onay'),
-                            content: const Text(
-                              'Bu randevuyu tamamlamak istediğinize emin misiniz?',
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.startToEnd) {
+                          Get.toNamed(
+                            AppRoutes.APPOINTMENTDETAIL,
+                            arguments: appt,
+                          );
+                          return false;
+                        } else if (direction == DismissDirection.endToStart) {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('Onay'),
+                              content: const Text(
+                                'Bu randevuyu tamamlamak istediğinize emin misiniz?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(false),
+                                  child: const Text('Hayır'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(ctx).pop(true),
+                                  child: const Text('Evet'),
+                                ),
+                              ],
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(false),
-                                child: const Text('Hayır'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.of(ctx).pop(true),
-                                child: const Text('Evet'),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (confirm == true) {
-                          await controller.markDone(appt.id!);
+                          );
+                          if (confirm == true) {
+                            await controller.markDone(appt.id!);
+                          }
+                          return false;
                         }
                         return false;
-                      }
-                      return false;
-                    },
-                    child: AppointmentCard(appointment: appt),
-                  );
-                },
-              );
-            }),
+                      },
+                      child: AppointmentCard(appointment: appt),
+                    );
+                  },
+                );
+              }),
+            ),
           ),
         ],
       ),

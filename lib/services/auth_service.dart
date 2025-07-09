@@ -89,7 +89,6 @@ class AuthService extends GetxService {
   Future<bool> isAuthenticated() async {
     try {
       final token = _storageService.getValue<String>(StorageKeys.userToken);
-      print('token: $token');
       if (token == null) {
         currentUser.value = null;
         return false;

@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/core/base_controller.dart';
 import 'package:salon_sac_flutter_v2/models/app_advance.dart';
 import 'package:salon_sac_flutter_v2/modules/transaction_dashboard/transaction_dashboard_controller.dart';
 import 'package:salon_sac_flutter_v2/repositories/advance_repository.dart';
 
-class AdvanceController extends GetxController {
+class AdvanceController extends BaseController {
   final AdvanceRepository _repo = Get.find();
 
   final allRequests = <AppAdvance>[].obs;
@@ -30,7 +31,7 @@ class AdvanceController extends GetxController {
       rejected.value = sorted.where((r) => r.status == 'reddedildi').toList();
       pendingCount.value = sorted.where((r) => r.status == 'beklemede').length;
     } catch (e) {
-      Get.snackbar('Hata', 'Avans talepleri yüklenemedi');
+      print('Avans talepleri yüklenemedi');
     }
   }
 
@@ -39,9 +40,9 @@ class AdvanceController extends GetxController {
       await _repo.updateStatus(id, status);
       await loadAdvanceRequests();
       Get.find<TransactionDashboardController>().refreshDashboard();
-      Get.snackbar('Başarılı', 'Avans "$status" olarak güncellendi');
+      showSuccessSnackbar(message: 'Avans "$status" olarak güncellendi');
     } catch (e) {
-      Get.snackbar('Hata', 'Durum güncellenemedi');
+      showErrorSnackbar(message: "Durum güncellenirken bir hata oluştu!");
     }
   }
 }

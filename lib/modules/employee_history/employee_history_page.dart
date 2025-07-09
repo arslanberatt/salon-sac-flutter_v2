@@ -160,7 +160,7 @@ class EmployeeHistoryPage extends GetView<EmployeeHistoryController> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryDark,
+                      color: AppColors.primaryLight,
                     ),
                   ),
                   const SizedBox(height: AppSizes.paddingM),

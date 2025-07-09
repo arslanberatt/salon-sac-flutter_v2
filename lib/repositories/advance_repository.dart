@@ -15,7 +15,6 @@ class AdvanceRepository extends GetxService {
     final res = await _apiServices.get(ApiConstants.allAdvanceRequests);
     if (res.statusCode == 200) {
       final data = res.data['data'] as List;
-      print(data);
       return data.map((e) => AppAdvance.fromJson(e)).toList();
     }
     throw Exception("Avans verileri alınamadı");
@@ -23,10 +22,8 @@ class AdvanceRepository extends GetxService {
 
   Future<List<AppAdvance>> getMyAdvances() async {
     final res = await _apiServices.get(ApiConstants.myAdvanceRequests);
-    print(res);
     if (res.statusCode == 200) {
       final data = res.data['data'] as List;
-      print(data);
       return data.map((e) => AppAdvance.fromJson(e)).toList();
     }
     throw Exception("Kendi avans verilerin alınamadı");

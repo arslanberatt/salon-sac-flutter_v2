@@ -134,9 +134,6 @@ class UserRepository extends GetxService {
       );
 
       print('KOD DOĞRULAMA RESPONSE: ${res.statusCode}');
-      print('DATA: ${res.data}');
-
-      // 🔥 Doğru yerden token'ı çekiyoruz:
       if (res.statusCode == 200 &&
           res.data['data'] != null &&
           res.data['data']['temporaryToken'] != null) {

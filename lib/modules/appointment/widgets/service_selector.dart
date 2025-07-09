@@ -24,12 +24,16 @@ class ServiceSelector extends GetView<AppointmentController> {
                 selected: controller.selectedServices.contains(s),
                 showCheckmark: true,
                 checkmarkColor: Colors.white,
-                backgroundColor: AppColors.lightCard,
-                selectedColor: AppColors.primaryDark,
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.darkCard
+                    : AppColors.lightCard,
+                selectedColor: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.primaryLight
+                    : AppColors.primary,
                 labelStyle: TextStyle(
                   color: controller.selectedServices.contains(s)
-                      ? Colors.white
-                      : null,
+                      ? AppColors.inputBorder
+                      : AppColors.textSecondary,
                 ),
                 onSelected: (_) => controller.toggleService(s),
               ),

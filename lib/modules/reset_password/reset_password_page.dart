@@ -8,13 +8,18 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Yeni Şifre Belirle')),
+      appBar: AppBar(
+        title: Text(
+          'Salon Saç',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Form(
           key: controller.passwordFormKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
                 'Hesabınız için yeni bir şifre belirleyin.',
@@ -28,9 +33,7 @@ class ResetPasswordPage extends GetView<ResetPasswordController> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        controller.isLoading
-                            ? Icons.lock
-                            : Icons.lock_open,
+                        controller.isLoading ? Icons.lock : Icons.lock_open,
                       ),
                       onPressed: () {}, // Gerekirse şifre görünürlüğü eklenir
                     ),

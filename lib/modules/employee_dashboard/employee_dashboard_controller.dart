@@ -7,8 +7,8 @@ class EmployeeDashboardController extends BaseController {
     Get.toNamed(AppRoutes.SERVICE);
   }
 
-  void goTogoToEmployeeList() {
-    Get.toNamed(AppRoutes.EMPLOYEELIST);
+  void goToSalaryRecords() {
+    Get.toNamed(AppRoutes.SALARY);
   }
 
   void goToCalendar() {

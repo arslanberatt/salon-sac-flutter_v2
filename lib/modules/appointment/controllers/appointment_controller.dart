@@ -83,7 +83,7 @@ class AppointmentController extends BaseController {
       appointments.assignAll(futures[2] as List<AppAppointment>);
       _applyFilters();
     } catch (e) {
-      showErrorSnackbar(message: e.toString());
+      showErrorSnackbar(message: "Randevular yüklenirken hata oluştu!");
     } finally {
       setLoading(false);
     }

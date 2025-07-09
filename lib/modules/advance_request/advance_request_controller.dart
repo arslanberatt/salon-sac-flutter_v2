@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:salon_sac_flutter_v2/core/base_controller.dart';
 import 'package:salon_sac_flutter_v2/models/app_advance.dart';
 import 'package:salon_sac_flutter_v2/repositories/advance_repository.dart';
 
-class AdvanceRequestController extends GetxController {
+class AdvanceRequestController extends BaseController {
   final AdvanceRepository _repo = Get.find();
 
   final myRequests = <AppAdvance>[].obs;
   final amount = 0.obs;
   final reason = ''.obs;
   final formKey = GlobalKey<FormState>();
-  final isLoading = false.obs;
 
   @override
   void onInit() {
@@ -19,28 +19,40 @@ class AdvanceRequestController extends GetxController {
   }
 
   Future<void> loadMyRequests() async {
-    isLoading.value = true;
+    setLoading(true);
+
     try {
       final list = await _repo.getMyAdvances();
-      myRequests.value = list.reversed.toList();
+      final oneYearAgo = DateTime.now().subtract(const Duration(days: 365));
+      final filtered = list
+          .where((e) => e.createdAt != null && e.createdAt!.isAfter(oneYearAgo))
+          .toList();
+
+      filtered.sort(
+        (a, b) => b.createdAt!.compareTo(a.createdAt!),
+      ); // yeni üstte
+
+      myRequests.value = filtered;
     } catch (e) {
-      Get.snackbar('Hata', 'Avanslar yüklenemedi');
+      showErrorSnackbar(message: 'Avanslar yüklenemedi');
     } finally {
-      isLoading.value = false;
+      setLoading(false);
     }
   }
 
   Future<void> submit() async {
+    setLoading(true);
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
-
     try {
       await _repo.createAdvance(amount.value, reason.value);
       await loadMyRequests();
-      Get.snackbar('Başarılı', 'Avans talebi oluşturuldu');
+      showSuccessSnackbar(message: 'Avans talebi oluşturuldu!');
       formKey.currentState!.reset();
     } catch (e) {
-      Get.snackbar('Hata', 'Avans talebi oluşturulamadı');
+      showErrorSnackbar(message: 'Avans talebi oluşturulamadı!');
+    } finally {
+      setLoading(false);
     }
   }
 }

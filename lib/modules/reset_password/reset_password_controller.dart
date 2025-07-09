@@ -70,8 +70,6 @@ class ResetPasswordController extends BaseController {
   Future<void> resetPassword() async {
     if (!passwordFormKey.currentState!.validate()) return;
     final token = _storage.getValue<String>(StorageKeys.temporaryToken);
-    print("TOKEN ALINDI: $token");
-
     if (token == null || token.isEmpty) {
       showErrorSnackbar(message: 'Token bulunamadı. Yeniden deneyin.');
       return;

@@ -33,9 +33,9 @@ class AppSalary {
 
   factory AppSalary.fromJson(Map<String, dynamic> json) => AppSalary(
     id: json["_id"],
-    employeeId: json["employeeId"] == null
-        ? null
-        : EmployeeId.fromJson(json["employeeId"]),
+    employeeId: json["employeeId"] is Map
+        ? EmployeeId.fromJson(json["employeeId"])
+        : null,
     type: json["type"],
     amount: (json["amount"] as num?)?.toDouble(),
     description: json["description"],

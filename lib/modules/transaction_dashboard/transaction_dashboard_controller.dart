@@ -19,7 +19,6 @@ class TransactionDashboardController extends BaseController {
   }
 
   Future<void> getTransactions() async {
-    setLoading(true);
     try {
       final transactions = await _transactionRepository.getTransactions();
       allTransactions.value = transactions;
@@ -27,8 +26,6 @@ class TransactionDashboardController extends BaseController {
       calculateTotalAmount();
     } catch (e) {
       showErrorSnackbar(message: "Kasa işlemleri çekilirken sorun oluştu!");
-    } finally {
-      setLoading(false);
     }
   }
 
