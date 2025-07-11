@@ -22,6 +22,7 @@ class AppColors {
 
   // Hata ve durumlar
   static const Color error = Color(0xFFD32F2F);
+  static const Color warning = Color(0xffF2994A);
   static const Color success = Color(0xFF388E3C);
 
   static const Color darkCard = Color(0xFF151A18);

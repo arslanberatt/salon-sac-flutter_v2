@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:salon_sac_flutter_v2/routers/app_pages.dart';
 import 'package:salon_sac_flutter_v2/utils/constants/app_colors.dart';
 
 class BaseController extends GetxController {
@@ -20,9 +19,9 @@ class BaseController extends GetxController {
       message,
       snackPosition: SnackPosition.TOP,
       backgroundColor: Get.isDarkMode
-          ? AppColors.primaryLight
-          : AppColors.primary,
-      colorText: Get.isDarkMode ? AppColors.textPrimary : AppColors.textWhite,
+          ? const Color.fromARGB(255, 194, 115, 46)
+          : AppColors.warning,
+      colorText: AppColors.textWhite,
       margin: EdgeInsets.all(16),
       borderRadius: 8,
       isDismissible: true,
@@ -46,7 +45,7 @@ class BaseController extends GetxController {
           ? AppColors
                 .success // örn: koyu yeşil
           : const Color.fromARGB(255, 89, 183, 93), // örn: açık yeşil
-      colorText: Get.isDarkMode ? AppColors.textPrimary : AppColors.textWhite,
+      colorText: AppColors.textWhite,
       margin: const EdgeInsets.all(16),
       borderRadius: 8,
       isDismissible: true,
