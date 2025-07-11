@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 import 'package:salon_sac_flutter_v2/services/storage_service.dart';
 
@@ -65,8 +66,14 @@ class ApiServices extends GetxService {
         connectTimeout: Duration(seconds: 10),
         receiveTimeout: Duration(seconds: 10),
         contentType: "application/json",
+        validateStatus: (status) => true,
       ),
     );
+    (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+        (client) {
+          client.badCertificateCallback = (cert, host, port) => true;
+          return client;
+        };
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {

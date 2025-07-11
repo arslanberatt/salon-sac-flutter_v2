@@ -48,6 +48,7 @@ class EmployeeHistoryController extends BaseController {
         return r.employeeId?.id == employee.id &&
             r.date != null &&
             r.date!.year == selectedMonth.year &&
+            r.approved == true &&
             r.date!.month == selectedMonth.month;
       }).toList();
     } catch (e) {

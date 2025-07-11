@@ -14,11 +14,18 @@ class AdvancePage extends GetView<AdvanceController> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Avans Bildirimleri'),
-          bottom: const TabBar(
-            labelColor: AppColors.primary,
+          title: Text(
+            'Salon Saç',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          bottom: TabBar(
+            labelColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
             unselectedLabelColor: Colors.grey,
-            indicatorColor: AppColors.primary,
+            indicatorColor: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.lightCard
+                : AppColors.darkCard,
             tabs: [
               Tab(text: 'Tümü'),
               Tab(text: 'Onaylanan'),
