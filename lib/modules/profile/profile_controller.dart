@@ -100,8 +100,10 @@ class ProfileController extends BaseController {
       final updated = await _userRepository.changePassword(newPassword.value);
       if (updated != null) {
         _auth.currentUser.value = updated;
-        showSuccessSnackbar(message: 'Şifre başarıyla değiştirildi');
+
         Get.back();
+        await Future.delayed(Duration(seconds: 2));
+        showSuccessSnackbar(message: 'Şifre başarıyla değiştirildi');
       } else {
         showErrorSnackbar(message: 'Hata oluştu');
       }

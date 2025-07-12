@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>destination</key>
+	<string>export</string>
+	<key>method</key>
+	<string>release-testing</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.artyom.salonsac</key>
+		<string>salonSac_adHoc_11_07_2025</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>6B8DD93D6DA2C5DA6CCEFC90338ADA5502D034F9</string>
+	<key>signingStyle</key>
+	<string>manual</string>
+	<key>stripSwiftSymbols</key>
+	<true/>
+	<key>teamID</key>
+	<string>4KQKR66JMY</string>
+	<key>thinning</key>
+	<string>&lt;none&gt;</string>
+</dict>
+</plist>
