@@ -193,48 +193,6 @@ void _showCancelDetails(BuildContext context, AppTransaction tx) {
               ),
             ),
             const SizedBox(height: 8),
-            Container(
-              margin: const EdgeInsets.only(bottom: 12),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? Colors.red.shade100.withOpacity(0.1)
-                    : Colors.red.shade50,
-                border: Border.all(color: Colors.red.shade200),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.warning_amber_rounded,
-                    color: Colors.red,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'İptal edilen bir randevu ise çalışanın primi kadar olan tutar kesilmesi gerekir. Bu işlem sistem tarafından otomatik yapılmaz.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: isDark
-                            ? Colors.red.shade200
-                            : Colors.red.shade800,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Text(
-              'İptal Bilgisi',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 8),
             _detailRow('İptal eden idsi', tx.canceledBy ?? '-', subColor),
             _detailRow(
               'Ne zaman',
