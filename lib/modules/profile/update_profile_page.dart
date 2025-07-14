@@ -51,14 +51,6 @@ class UpdateProfilePage extends GetView<ProfileController> {
                         child: image == null
                             ? const Icon(Icons.person_outline, size: 48)
                             : null,
-
-                        onBackgroundImageError: (_, __) {
-                          Icon(
-                            Icons.person,
-                            size: 64,
-                            color: AppColors.primary,
-                          );
-                        },
                       ),
                       Positioned(
                         bottom: 0,
@@ -117,6 +109,44 @@ class UpdateProfilePage extends GetView<ProfileController> {
                 child: ElevatedButton(
                   onPressed: controller.saveProfile,
                   child: const Text('Kaydet'),
+                ),
+              ),
+              const SizedBox(height: AppSizes.spacingL),
+
+              Divider(),
+
+              const SizedBox(height: AppSizes.spacingS),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final confirm = await Get.dialog<bool>(
+                      AlertDialog(
+                        title: const Text("Emin misiniz?"),
+                        content: const Text(
+                          "Hesabınız kalıcı olarak silinecek.",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Get.back(result: false),
+                            child: const Text("Vazgeç"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () => Get.back(result: true),
+
+                            child: const Text("Hesabımı Sil"),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (confirm == true) {
+                      await controller.deleteMe();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  label: const Text("Hesabımı Sil"),
                 ),
               ),
             ],

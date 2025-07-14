@@ -13,6 +13,7 @@ abstract class ApiConstants {
   static const String forgotPassword = '/api/forget-password';
   static const String verifyResetCode = '/api/reset-code-check';
   static const String resetPassword = '/api/reset-password';
+  static const String deleteMe = '/api/delete-me';
 
   // User
   static const String profile = '/api/me';

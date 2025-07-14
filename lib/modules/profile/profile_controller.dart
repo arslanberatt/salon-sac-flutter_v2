@@ -111,4 +111,46 @@ class ProfileController extends BaseController {
       setLoading(false);
     }
   }
+
+  Future<void> deleteMe() async {
+    final confirm = await Get.dialog<bool>(
+      AlertDialog(
+        title: const Text('Hesabını Sil'),
+        content: const Text(
+          'Bu işlem geri alınamaz. Devam etmek istiyor musun?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: false),
+            child: const Text('Vazgeç'),
+          ),
+          ElevatedButton(
+            onPressed: () => Get.back(result: true),
+            child: const Text('Sil'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true) return;
+
+    setLoading(true);
+    try {
+      final success = await _userRepository.deleteMe();
+      if (success) {
+        await logout();
+      } else {
+        showErrorSnackbar(message: 'Hesap silinemedi!');
+      }
+    } catch (e) {
+      showErrorSnackbar(message: 'Bir hata oluştu: $e');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> logout() async {
+    await _auth.signOut();
+    Get.offAllNamed(AppRoutes.LOGIN);
+  }
 }

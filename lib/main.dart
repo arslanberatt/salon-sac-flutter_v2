@@ -26,8 +26,6 @@ class MyApp extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      // mert@test.com
-      // Berat123.
       getPages: AppPages.pages,
       initialRoute: AppRoutes.INITIAL,
       initialBinding: AppBinding(),

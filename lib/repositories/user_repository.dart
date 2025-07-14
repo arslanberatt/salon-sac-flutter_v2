@@ -152,4 +152,14 @@ class UserRepository extends GetxService {
     );
     return res.statusCode == 200;
   }
+
+  Future<bool> deleteMe() async {
+    try {
+      final res = await _apiServices.delete(ApiConstants.deleteMe);
+      return res.statusCode == 200;
+    } catch (e) {
+      print("Hesap silinirken hata oluştu: $e");
+      return false;
+    }
+  }
 }
