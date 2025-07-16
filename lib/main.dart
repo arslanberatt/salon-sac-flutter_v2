@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.pages,
       initialRoute: AppRoutes.INITIAL,
       initialBinding: AppBinding(),
-      title: 'Flutter Demo',
+      title: 'Salon Saç',
       theme: MyThemes.lightTheme,
       darkTheme: MyThemes.darkTheme,
       themeMode: ThemeMode.system,

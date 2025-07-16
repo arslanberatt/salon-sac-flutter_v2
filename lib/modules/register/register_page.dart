@@ -51,23 +51,12 @@ class RegisterPage extends GetView<RegisterController> {
               const SizedBox(height: 16),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Telefon',
+                  labelText: 'Telefon (Opsiyonel)',
                   border: OutlineInputBorder(),
                   hintText: '5XXXXXXXXX',
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (v) => controller.phone.value = v,
-                validator: (v) {
-                  if (v == null || v.isEmpty) return 'Telefon gerekli';
-                  if (v.length != 10) return '10 haneli olmalı';
-                  if (!v.startsWith('5')) {
-                    return 'Geçerli bir cep numarası girin';
-                  }
-                  if (!RegExp(r'^[0-9]+$').hasMatch(v)) {
-                    return 'Sadece rakam girin';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 16),
               _buildInput(

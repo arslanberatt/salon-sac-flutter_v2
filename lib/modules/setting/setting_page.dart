@@ -79,7 +79,7 @@ class SettingPage extends GetView<SettingController> {
                         title:
                             '${controller.user.value?.name ?? ''} ${controller.user.value?.lastname ?? ''}',
                         subtitle: controller.user.value?.email ?? '',
-                        phone: controller.user.value?.phone ?? '',
+                        phone: controller.user.value?.phone ?? '-',
                       ),
                     ],
                   ),

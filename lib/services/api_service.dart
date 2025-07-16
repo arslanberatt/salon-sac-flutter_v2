@@ -175,7 +175,7 @@ class ApiServices extends GetxService {
     required String name,
     required String lastname,
     required String email,
-    required String phone,
+    String? phone,
     required String password,
   }) async {
     final data = {

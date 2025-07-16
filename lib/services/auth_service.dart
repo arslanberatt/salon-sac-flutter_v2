@@ -44,7 +44,7 @@ class AuthService extends GetxService {
     required String name,
     required String lastname,
     required String email,
-    required String phone,
+    String? phone,
     required String password,
   }) async {
     try {
